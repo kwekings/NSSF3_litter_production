@@ -1,31 +1,50 @@
+# modified from "part I (updated with spp by plot).R"
+
 #########################
 # LOAD DATA & SETUP DFs #
 #########################
 
-setwd("D:\\National University of Singapore\\Chong Kwek Yan - CRSF\\Past projects - DO NOT SHARE\\R_PJ\\publish")
+# Load libraries ----
 
-# Lamina
-lamina <- read.csv("Cleaned lamina+PJ.csv", header = T, stringsAsFactors=T)
-lamina$date1 <- as.POSIXct(lamina$General.date, format ="%d/%m/%Y", tz="GMT")
-lamina$date2 <- format(as.Date(lamina$date1), "%Y-%m")
-summary(lamina)
-lianas <- levels(lamina$species)[c(7,9,15,23,24,30,33,36,37,39,57,60,108,109,111)]
+library(tidyverse)
+library(vegan)
 
-# Twigs
-twig <- read.csv("Cleaned twigs+PJ.csv", header=T)
-summary(twig)
-twig$date1 <- as.POSIXct(twig$General.date, format ="%d/%m/%Y", tz="GMT")
-twig$date2 <- format(as.Date(twig$date1), "%Y-%m")
-summary(twig)
+## Lamina ----
+
+lamina <- read.csv("./data/Cleaned lamina+PJ.csv", header = T, stringsAsFactors=T) %>%
+  mutate(date1 = as.POSIXct(General.date, format ="%d/%m/%Y", tz="GMT"),
+         date2 = format(as.Date(date1), "%Y-%m"))
+
+lianas <- c(
+  "Agelaea borneensis",
+  "Another climber",
+  "Bauhinia semibifida",
+  "Dalbergia pseudo-sissoo",
+  "Derris amoena",
+  "Fissistigma latifolium var. ovoideum",
+  "Grewia laevigata",
+  "Iodes ovalis",
+  "Iodes velutina",
+  "Leuconotis griffithii",
+  "Smilax setosa",
+  "Strychnos",
+  "Uncaria cordata",
+  "Uncaria cordata var. cordata f. sundaica",
+  "Willughbeia coriacea"
+)
+
+## Twigs
+
+twig <- read.csv("./data/Cleaned twigs+PJ.csv", header=T) %>%
+  mutate(date1 = as.POSIXct(General.date, format ="%d/%m/%Y", tz="GMT"),
+         date2 = format(as.Date(date1), "%Y-%m"))
 
 ####################
 # LITTER COMM NMDS #
 ####################
 
-spp.by.plot <- with(lamina, tapply(Dry.Mass, list(Plot, species), sum))
-spp.by.plot[is.na(spp.by.plot)] <- 0
-
-library(vegan)
+spp.by.plot <- xtabs(Dry.Mass ~ Plot + species, data = lamina) %>%
+  as.data.frame.matrix()
 
 leaf.nmds <- metaMDS(spp.by.plot, dist="bray", k=2)
 plot(leaf.nmds, type="t")
@@ -33,12 +52,51 @@ plot(leaf.nmds, type="t")
 wetplots<-c("Q10","Q3","Q4","Q6","Q9")
 
 # select only the IDed trees from this
-rownames(leaf.nmds$species)
-sel <- c(6,8,10:14,16:19,21,22,25:28,31,32,34,35,38,40:46,49:55,58,59,61,110,112)
-hist(cex.leaf <- log(apply(spp.by.plot,2,sum)[sel]))
 
-spp.sel <- rownames(leaf.nmds$species)[sel]
-identical(spp.sel, colnames(spp.by.plot)[sel])
+spp.sel <- c(
+  "Adenanthera malayana",
+  "Alstonia pneumatophora",
+  "Aporosa falcifera",
+  "Aporosa frutescens",
+  "Aporosa prainiana",
+  "Archidendron clypearia",
+  "Artocarpus kemando",
+  "Bhesa paniculata",
+  "Buchanania sessifolia",
+  "Calophyllum tetrapterum var. tetrapterum",
+  "Calophyllum wallichianum var. incrassatum", 
+  "Campnosperma squamatum",
+  "Canarium pilosum", 
+  "Diospyros maingayi",
+  "Dysoxylum cauliflorum", 
+  "Elaeocarpus mastersii",
+  "Elaeocarpus stipularis", 
+  "Gironniera nervosa",
+  "Gluta wallichii", 
+  "Gynotroches axillaris",
+  "Hevea brasiliensis", 
+  "Knema malayana",
+  "Lindera lucida", 
+  "Lithocarpus ewyckii",
+  "Litsea firma", 
+  "Lophopetalum multinervium",
+  "Maasia glauca", 
+  "Madhuca tomentosa",
+  "Mallotus paniculatus", 
+  "Myristica cinnamomea",
+  "Nothaphoebe umbelliflora", 
+  "Pentace triptera",
+  "Pometia pinnata", 
+  "Prunus polystachya",
+  "Pternandra echinata", 
+  "Rhodamnia cinerea",
+  "Sterculia cordata", 
+  "Sterculia macrophylla",
+  "Timonius wallichianus", 
+  "Vatica pauciflora ",
+  "Xanthophyllum flavescens"
+)
+
 
 #jpeg("Leaf litter communities.jpg", width=14, height=8, units="in", res=300)
 par(mar=c(5,5,2,2))
@@ -59,18 +117,16 @@ adonis(spp.by.plot ~ pt, dist="bray", permutations=99999)
 # TREE COMM NMDS #
 ##################
 
-tree <- read.csv("ten plot trees.csv", header=T)
-summary(tree)
-tree <- droplevels(na.omit(tree))
-tree <- droplevels(tree[tree$species != "",])
-tree$ba <- pi*(tree$dbh_2018/2)^2
-summary(tree)
+tree <- read.csv("../NSSF2_main/Data/NSSF2trees_160324.csv") %>%
+  mutate(plot = paste0("Q", plot)) %>%
+  filter(plot %in% unique(lamina$Plot)) %>%
+  mutate(species = str_replace_all(species, "cf. ", ""),
+         dbh = as.numeric(dbh),
+         ba = pi*(dbh/2)^2) %>%
+  filter(species != "")
 
-
-library(reshape2)
-tree.comm <- dcast(data=tree, formula=plot~species, fun.aggregate=sum, value.var="ba", fill=0)
-rownames(tree.comm) <- tree.comm$plot
-tree.comm$plot <- NULL
+tree.comm <- xtabs(ba ~ plot + species, data = tree) %>%
+  as.data.frame.matrix()
 
 tree.nmds <- metaMDS(tree.comm, k=2, dist="bray")
 #plot(tree.nmds, type="t")
@@ -132,13 +188,16 @@ nrow(leaf.nmds$species)
 # SPECIES INTRINSIC LITTER PRODUCTION #
 #######################################
 
-spp.sel
 # 5 species (not present in 10 plots) omitted in this step (n=36):
-ba.by.plot <- tree.comm[,na.omit(match(spp.sel,colnames(tree.comm)))]
+
+ba.by.plot <- tree.comm[, colnames(tree.comm) %in% spp.sel]
 
 # extract litter collection from these 36 species
 ind.lam <- which(colnames(spp.by.plot) %in% colnames(ba.by.plot))
-litter.consol <- melt(spp.by.plot[,ind.lam], varnames=c("plot", "species"), value.name = "litter.collection")
+litter.consol <- melt(spp.by.plot[,ind.lam], varnames=c("Plot", "species"), value.name = "litter.collection")
+
+colnames(ba.by.plot)
+colnames(spp.by.plot)
 
 # combine with basal area 
 tpba <- melt(ba.by.plot, value.name = "ten.ba")
@@ -159,6 +218,15 @@ for(i in 1:length(spp.sel)){
 		  min(lamina[which(lamina$species==spp.sel[i]),"date1"], na.rm=T))
 	  }
 }
+
+head(lamina)
+
+with(lamina, table(Plot, date1))
+
+ggplot(data = lamina) +
+  geom_point(aes(y = conversion_ratio, x = species)) +
+  ylim(c(0,1))
+
 
 # amount of litter produced per year
 litter.consol$litter.production <- with(litter.consol, 
@@ -221,7 +289,16 @@ litter.consol$plotwet <- ifelse(litter.consol$plot %in% c("Q3","Q4","Q6","Q9","Q
 # CHNS data #
 #############
 
-chns <- read.csv("CHNS v3.csv", header=T)
+CNR <- read.csv("../ecophysio_traits/raw_data/CN ratio.csv", header=T, stringsAsFactors = T)
+chns_fresh <- read.csv("./data/CHNS v3_fresh.csv")
+
+chns_fresh 
+
+full_join(CNR, chns_fresh %>% group_by(Species) %>% 
+            summarise_all(mean), by = "Species")
+
+chns_senesced <- read.csv("./data/CHNS v3_senesced.csv")
+
 summary(chns)
 cn <- with(chns, tapply(Ratio, Species, mean))
 litter.consol$CNratio <- cn[match(litter.consol$species, names(cn))]

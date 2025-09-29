@@ -1,27 +1,36 @@
-setwd("F:\\National University of Singapore\\Chong Kwek Yan - NSSF3\\CRSF\\Past projects - DO NOT SHARE\\R_PJ\\publish")
-setwd("D:\\National University of Singapore\\Chong Kwek Yan - CRSF\\Past projects - DO NOT SHARE\\R_PJ\\publish")
+library(tidyverse)
 
-litter <- read.csv("litter.production w species-plot CAA Feb21.csv", header=T)
-litter$X <- NULL
+PJtraits <- read.csv("./data/PJ leaf dat.csv", header=T)
 
-HJtraits <- read.csv("HJ leaf data full.csv", header=T)
-PJtraits <- read.csv("PJ leaf dat.csv", header=T)
-summary(HJtraits)
-summary(PJtraits)
+HJtraits <- read.csv("../ecophysio_traits/raw_data/leaf soft traits.csv", header=T) %>%
+  mutate(ldmc = as.numeric(ldmc),
+         SLA = as.numeric(SLA),
+         thickness = as.numeric(thickness),
+         species = toupper(substr(indiv, 0, 3)))
 
-HJtraits$ldmc[which(HJtraits$ldmc=="#DIV/0!")] <- NA
-HJtraits$SLA[which(HJtraits$SLA=="#DIV/0!")] <- NA
-HJtraits$thickness[which(HJtraits$thickness=="#DIV/0!")] <- NA
-HJtraits[6:8] <- apply(apply(HJtraits[6:8], 2, as.character), 2, as.numeric)
-HJtraits$species <- toupper(substr(HJtraits$indiv, 0, 3))
+traits <- rbind(
+  HJtraits %>%
+    group_by(species) %>%
+    summarise(sla = mean(SLA, na.rm = TRUE),
+              lt = mean(thickness, na.rm = TRUE),
+              ldmc = mean(ldmc, na.rm = TRUE)),
+  PJtraits %>%
+    mutate(meanlt = mean(c(MESOPHYLL_THICKNESS_1_mm,
+                           MESOPHYLL_THICKNESS_2_mm,
+                           MESOPHYLL_THICKNESS_3_mm))) %>%
+    rename(species = SPECIES) %>%
+    group_by(species) %>%
+    summarise(sla = mean(SLA_cm2.g.1, na.rm = TRUE),
+              lt = mean(meanlt, na.rm = TRUE),
+              ldmc = mean(LDMC, na.rm = TRUE))
+)
+
 
 PJsla <- with(PJtraits, tapply(SLA_cm2.g.1, SPECIES, mean, na.rm=T))
-HJsla <- with(HJtraits, tapply(SLA, species, mean, na.rm=T))
-HJlt <- with(HJtraits, tapply(thickness, species, mean, na.rm=T))
 PJtraits$meanlt <- apply(PJtraits[,6:8],1,mean,na.rm=T)
 PJlt <- with(PJtraits, tapply(meanlt, SPECIES, mean))
 PJldmc <- with(PJtraits, tapply(LDMC, SPECIES, mean, na.rm=T))
-HJldmc <- with(HJtraits, tapply(ldmc, species, mean, na.rm=T))/1000
+
 
 # number of individuals represented in the samples
 (PJsample <- table(PJtraits$SPECIES)/5)
@@ -39,7 +48,16 @@ biplot(leaf.PCA)
 # Merge trait and production data #
 ###################################
 
-summary(litter)
+litter <- read.csv("./data/litter.production w species-plot CAA Feb21.csv", header=T) %>%
+  select(-X)
+
+litter %>%
+  group_by(code) %>%
+  summarise(CNratio = mean(CNratio)) %>%
+  rename(species = code) %>%
+  full_join(traits, by = "species") %>%
+  View()
+
 litter <- rbind(
   merge(x=litter, y=data.frame(code=names(HJsla),SLA=HJsla), by="code"),
   merge(x=litter, y=data.frame(code=names(PJsla),SLA=PJsla), by="code") )
@@ -890,7 +908,7 @@ for(i in 1:t2){
     tryCatch({ 
     table[i,j] <- paste0(
       round(coefmat[j,"Estimate"], 2),
-      " (±",
+      " (?",
       round(coefmat[j,"Std. Error"], 2),
       ")")
     },error=function(e){})
