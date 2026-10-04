@@ -1,13 +1,11 @@
-# modified from "part I (updated with spp by plot).R"
-
-#########################
-# LOAD DATA & SETUP DFs #
-#########################
+# heavily modified from "part I (updated with spp by plot).R"
 
 # Load libraries ----
 
 library(tidyverse)
 library(vegan)
+
+# Load data ----
 
 ## Lamina ----
 
@@ -32,24 +30,6 @@ lianas <- c(
   "Uncaria cordata var. cordata f. sundaica",
   "Willughbeia coriacea"
 )
-
-## Twigs
-
-twig <- read.csv("./data/Cleaned twigs+PJ.csv", header=T) %>%
-  mutate(date1 = as.POSIXct(General.date, format ="%d/%m/%Y", tz="GMT"),
-         date2 = format(as.Date(date1), "%Y-%m"))
-
-####################
-# LITTER COMM NMDS #
-####################
-
-spp.by.plot <- xtabs(Dry.Mass ~ Plot + species, data = lamina) %>%
-  as.data.frame.matrix()
-
-leaf.nmds <- metaMDS(spp.by.plot, dist="bray", k=2)
-plot(leaf.nmds, type="t")
-
-wetplots<-c("Q10","Q3","Q4","Q6","Q9")
 
 # select only the IDed trees from this
 
@@ -97,6 +77,22 @@ spp.sel <- c(
   "Xanthophyllum flavescens"
 )
 
+## Twigs ----
+
+twig <- read.csv("./data/Cleaned twigs+PJ.csv", header=T) %>%
+  mutate(date1 = as.POSIXct(General.date, format ="%d/%m/%Y", tz="GMT"),
+         date2 = format(as.Date(date1), "%Y-%m"))
+
+
+# LITTER COMM NMDS #####################
+
+spp.by.plot <- xtabs(Dry.Mass ~ Plot + species, data = lamina) %>%
+  as.data.frame.matrix()
+
+leaf.nmds <- metaMDS(spp.by.plot, dist="bray", k=2)
+plot(leaf.nmds, type="t")
+
+wetplots<-c("Q10","Q3","Q4","Q6","Q9")
 
 #jpeg("Leaf litter communities.jpg", width=14, height=8, units="in", res=300)
 par(mar=c(5,5,2,2))
@@ -113,9 +109,8 @@ dev.off()
 pt <- factor(ifelse(rownames(leaf.nmds$points) %in% wetplots, "wet", "dry"))
 adonis(spp.by.plot ~ pt, dist="bray", permutations=99999)
 
-##################
-# TREE COMM NMDS #
-##################
+
+# TREE COMM NMDS ###################
 
 tree <- read.csv("../NSSF2_main/Data/NSSF2trees_160324.csv") %>%
   mutate(plot = paste0("Q", plot)) %>%
@@ -184,9 +179,8 @@ dev.off()
 length(tree.comm)
 nrow(leaf.nmds$species)
 
-#######################################
-# SPECIES INTRINSIC LITTER PRODUCTION #
-#######################################
+
+# SPECIES INTRINSIC LITTER PRODUCTION ########################################
 
 # 5 species (not present in 10 plots) omitted in this step (n=36):
 
@@ -219,14 +213,46 @@ for(i in 1:length(spp.sel)){
 	  }
 }
 
-head(lamina)
+lamina_spp_list <- lapply(spp.sel, function(sp) {
+  lamina_sp <- filter(lamina, species == sp)
+  lamina_sp_list <- lapply(as.character(unique(lamina_sp$Plot)), function(plot) {
+    lamina_sp %>%
+      filter(Plot == plot) %>%
+      arrange(date1) %>%
+      mutate(days = c(14,diff(date1))) %>%
+      select(date1, Dry.Mass, days)
+  })
+  names(lamina_sp_list) <- as.character(unique(lamina_sp$Plot))
+  bind_rows(lamina_sp_list, .id = "Plot")
+})
+names(lamina_spp_list) <- spp.sel
 
-with(lamina, table(Plot, date1))
+lamina_prod_df <- lapply(lamina_spp_list, function(df) {
+  df %>%
+    group_by(Plot) %>%
+    summarise(lamina_prod = sum(Dry.Mass)/sum(days)/4*365)
+}) %>%
+  bind_rows(.id = "species") %>%
+  rename(plot = Plot) %>%
+  left_join(
+    tree %>%
+      group_by(plot, species) %>%
+      summarise(ba_tot = sum(ba)/(20*20)),
+    by = c("species", "plot")
+  ) %>%
+  mutate(ba_tot = replace_na(ba_tot, 0))
 
-ggplot(data = lamina) +
-  geom_point(aes(y = conversion_ratio, x = species)) +
-  ylim(c(0,1))
+spp.sel2 <- lamina_prod_df %>%
+  group_by(species) %>% 
+  summarise(count = n(), ba_tot2 = sum(ba_tot)) %>%
+  filter(count>2 & ba_tot2 != 0) %>%
+  pull(species)
 
+lamina_prod_df %>%
+  filter(species %in% spp.sel2) %>%
+  ggplot() +
+  geom_point(aes(y = lamina_prod, x = ba_tot)) +
+  facet_wrap(~species, scales = "free")
 
 # amount of litter produced per year
 litter.consol$litter.production <- with(litter.consol, 
@@ -295,7 +321,8 @@ chns_fresh <- read.csv("./data/CHNS v3_fresh.csv")
 chns_fresh 
 
 full_join(CNR, chns_fresh %>% group_by(Species) %>% 
-            summarise_all(mean), by = "Species")
+            summarise_all(mean), by = "Species") %>%
+  writexl::write_xlsx("CNHS_NewPhyto+Ecosystems.xlsx")
 
 chns_senesced <- read.csv("./data/CHNS v3_senesced.csv")
 

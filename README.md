@@ -6,4 +6,14 @@ The data was deposited on [Figshare](https://figshare.com/articles/dataset/Habit
 
 Changes to the data from the Figshare version:
 
+- _Madhuca tomentosa_ has been corrected to _Madhuca_ sp.
+
+Leaf lamina C and N content are divided into:
+* Fresh leaf C and N, of which the data from 22 species are shared with the same species in Lam et al. New Phytologist (see [GitHub repository](https://github.com/wengngai/ecophysio_traits) “[CN ratio.csv](https://github.com/wengngai/ecophysio_traits/blob/main/raw_data/CN%20ratio.csv)”) but
+  * 16 species are in the Lam et al. New Phytologist paper’s data but not the Ecosystems paper’s data.
+  * 4 species in the Ecosystems paper’s data not in the Lam et al. New Phytologist paper’s data.
+* Senesced leaf C and N. There are at two rows for most species because we sent in two samples for analyses, except:
+  * Adenanthera malayana where a third was sent in because one of the two samples differed more than expected.
+  * There were multiple _Madhuca_ sp. because some were originally thought to be _Gluta wallichii_ but the identification was corrected later.
+
 (To be continued...)
