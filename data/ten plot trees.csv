@@ -1,0 +1,574 @@
+plot,tree,species,dbh_2018
+Q1,Q1T01,Archidendron clypearia,9.6
+Q1,Q1T02a,Oncosperma horridum,14.2
+Q1,Q1T03,Alstonia angustifolia,15.7
+Q1,Q1T05,Bhesa paniculata,26.9
+Q1,Q1T06a,Eurya acuminata,30.3
+Q1,Q1T06b,Eurya acuminata,9.2
+Q1,Q1T06c,Eurya acuminata,5.8
+Q1,Q1T07,Pternandra echinata,5.7
+Q1,Q1T08,Bhesa paniculata,15.2
+Q1,Q1T09,Timonius wallichianus,7.8
+Q1,Q1T10,Xanthophyllum flavescens,7.2
+Q1,Q1T11,Pternandra echinata,8.6
+Q1,Q1T12,Bhesa paniculata,32.9
+Q1,Q1T14,Timonius wallichianus,9.5
+Q1,Q1T15,Pternandra echinata,11.6
+Q1,Q1T16,Gironniera nervosa,10
+Q1,Q1T17,Pternandra echinata,8.4
+Q1,Q1T18,Microcos globulifera,5.9
+Q1,Q1T19,Parkia speciosa,10.4
+Q1,Q1T20,Elaeocarpus stipularis,15
+Q1,Q1T21,Bhesa paniculata,25.5
+Q1,Q1T22,Macaranga gigantea,8.2
+Q1,Q1T25,Aporosa frutescens,7
+Q1,Q1T26,Symplocos fasciculata,8.7
+Q1,Q1T29,Bhesa paniculata,9.1
+Q1,Q1T32,Parkia speciosa,10.1
+Q1,Q1T33,Prunus polystachya,43.4
+Q1,Q1T34,Pternandra echinata,12.6
+Q1,Q1T35,Pternandra echinata,13.1
+Q1,Q1T36,Xanthophyllum flavescens,15.9
+Q1,Q1T37,Pternandra echinata,5.7
+Q1,Q1T38,Symplocos fasciculata,14.3
+Q1,Q1T39,Knema conferta,16.6
+Q1,Q1T40,Timonius wallichianus,12
+Q1,Q1T41,Xanthophyllum flavescens,27.2
+Q1,Q1T42,cf. Canthium confertum,19.7
+Q1,Q1T43,Elaeocarpus mastersii,13.6
+Q1,Q1T44,Hevea brasiliensis,11.9
+Q1,Q1T46,Pternandra echinata,14.8
+Q1,Q1T47,Microcos globulifera,9.8
+Q1,Q1T48,Canarium pilosum,17.2
+Q1,Q1T49,Prunus polystachya,12.7
+Q1,Q1T50,Symplocos fasciculata,10.4
+Q1,Q1T51,Parkia speciosa,10.3
+Q1,Q1T52,Timonius wallichianus,6.7
+Q1,Q1T53,Xanthophyllum flavescens,10
+Q1,Q1T54,Cryptocarya nitens,12.8
+Q1,Q1T55,Macaranga gigantea,26.1
+Q1,Q1T56,Licania splendens,11.8
+Q1,Q1T57,Horsfieldia polyspherula var. sumatrana,6.6
+Q1,Q1T58,Bhesa paniculata,43
+Q1,Q1T59a,Bhesa paniculata,10.4
+Q1,Q1T59b,Bhesa paniculata,5.9
+Q1,Q1T61,Xanthophyllum vitellinum,7.5
+Q1,Q1T63,Timonius wallichianus,7
+Q3,Q3T01,Artocarpus kemando,9.8
+Q3,Q3T03,Sterculia cordata,21.4
+Q3,Q3T05,Gynotroches axillaris,5.7
+Q3,Q3T06,Litsea erectinervia,10.7
+Q3,Q3T07,Horsfieldia sparsa,6.6
+Q3,Q3T08,Scaphium macropodum,6.7
+Q3,Q3T10,Horsfieldia crassifolia,28.3
+Q3,Q3T11,Horsfieldia crassifolia,16.2
+Q3,Q3T12,Palaquium impressionervium,7.4
+Q3,Q3T13,Bhesa paniculata,24.3
+Q3,Q3T14,Madhuca tomentosa,52
+Q3,Q3T16,Osmelia philippina,8.5
+Q3,Q3T20,Madhuca tomentosa,47.8
+Q3,Q3T21,Horsfieldia polyspherula var. polyspherula,6.8
+Q3,Q3T23,Palaquium impressionervium,6.1
+Q3,Q3T25,Xanthophyllum flavescens,5.7
+Q3,Q3T26,Maasia glauca,16.5
+Q3,Q3T27,Strombosia ceylanica,28.7
+Q3,Q3T29,Diospyros styraciformis,7.3
+Q3,Q3T30,Xanthophyllum flavescens,9
+Q3,Q3T31,Xanthophyllum flavescens,37.5
+Q3,Q3T32,Platea latifolia,13.8
+Q3,Q3T33,Knema glaucescens,7.3
+Q3,Q3T41,Xanthophyllum flavescens,6.4
+Q3,Q3T42,Syzygium oblatum,10.7
+Q3,Q3T43,Strombosia ceylanica,20.5
+Q3,Q3T48,Knema latericia ssp. ridleyi,12.7
+Q3,Q3T49,Canthium glabrum,7.2
+Q3,Q3T50,Maasia glauca,24.2
+Q3,Q3T51,Xanthophyllum flavescens,8.8
+Q3,Q3T52,Madhuca tomentosa,22.4
+Q3,Q3T54,Elaeocarpus stipularis,14.8
+Q3,Q3T55,Xanthophyllum flavescens,5.9
+Q3,Q3T56,Blumeodendron tokbrai,10.5
+Q3,Q3T58,Strombosia ceylanica,6.7
+Q3,Q3T59,Xanthophyllum flavescens,24.9
+Q3,Q3T60,Litsea grandis,6.6
+Q3,Q3T61,Syzygium pseudoformosum,6.6
+Q3,Q3T62,Myristica iners,9.6
+Q3,Q3T63,Alangium nobile,7.4
+Q4,Q4T01,Campnosperma auriculatum,89.2
+Q4,Q4T03,Xanthophyllum flavescens,8.7
+Q4,Q4T04,Neonauclea excelsa,10.7
+Q4,Q4T05,Neonauclea pallida,13.8
+Q4,Q4T06,Madhuca tomentosa,5.9
+Q4,Q4T07,Syzygium pseudoformosum,5.3
+Q4,Q4T08,Mastixia trichotoma cf. var. maingayi,20.5
+Q4,Q4T09a,Gymnacranthera farquhariana var. farquhariana,17.1
+Q4,Q4T09b,Gymnacranthera forbesii,15.9
+Q4,Q4T11,Polyalthia lateriflora,20.1
+Q4,Q4T12,Palaquium xanthochymum,5.6
+Q4,Q4T13,Myristica elliptica,14.8
+Q4,Q4T15,Xanthophyllum flavescens,10.9
+Q4,Q4T16,Sterculia rubiginosa,5.8
+Q4,Q4T17,Alstonia angustiloba,8.6
+Q4,Q4T18,Kopsia singapurensis,6.3
+Q4,Q4T19,Melanochyla caesia,6.6
+Q4,Q4T20,Madhuca tomentosa,29.7
+Q4,Q4T21,Strombosia ceylanica,6.3
+Q4,Q4T23,Pometia pinnata,5.6
+Q4,Q4T24,Beilschmiedia kunstleri,12.1
+Q4,Q4T25,Lophopetalum multinervium,10.7
+Q4,Q4T26,Myristica elliptica,14.6
+Q4,Q4T27,Sterculia rubiginosa,6.3
+Q4,Q4T28,Strombosia ceylanica,13.5
+Q4,Q4T29,Lophopetalum multinervium,36.8
+Q4,Q4T30,Alangium ridleyi,10.9
+Q4,Q4T32,Madhuca tomentosa,14.7
+Q4,Q4T34,Knema latericia ssp. ridleyi,5.9
+Q4,Q4T35,Neesia malayana,10.9
+Q4,Q4T36,Vatica pauciflora,17.9
+Q4,Q4T37,Aporosa falcifera,25.3
+Q4,Q4T38,Osmelia philippina,8
+Q4,Q4T39,Garcinia nervosa,9.1
+Q4,Q4T41,Xanthophyllum flavescens,12.5
+Q4,Q4T42,Madhuca tomentosa,10.7
+Q4,Q4T43,Horsfieldia wallichii,18.7
+Q4,Q4T45,Xanthophyllum flavescens,15.2
+Q4,Q4T46,Strombosia ceylanica,12.1
+Q4,Q4T47,Madhuca tomentosa,16.3
+Q4,Q4T49,Myristica elliptica,19.5
+Q4,Q4T50,Alseodaphne bancana,7.7
+Q4,Q4T51,Knema curtisii var. paludosa,20.6
+Q4,Q4T52,Madhuca tomentosa,5.8
+Q4,Q4T53,Xanthophyllum flavescens,13.1
+Q4,Q4T54,Lophopetalum multinervium,21.9
+Q4,Q4T55,Horsfieldia sparsa,18.2
+Q4,Q4T56,Gymnacranthera farquhariana var. farquhariana,10.1
+Q4,Q4T57,Mastixia trichotoma cf. var. maingayi,9
+Q4,Q4T58,Xanthophyllum flavescens,5.7
+Q4,Q4T59,Aglaia elliptica ssp. elliptica,5.5
+Q4,Q4T60,Aglaia odoratissima,9.1
+Q4,Q4T61,Calophyllum dispar,8.9
+Q4,Q4T62,Garcinia parvifolia,7.8
+Q4,Q4T63,Diospyros oblonga,5.9
+Q4,Q4T64,Ctenolophon parvifolius,19
+Q4,Q4T65,Vatica pauciflora,9.7
+Q4,Q4T66,Vatica pauciflora,34.4
+Q4,Q4T67,Horsfieldia crassifolia,19.6
+Q4,Q4T68,Mastixia trichotoma cf. var. maingayi,9.9
+Q4,Q4T69,Sterculia cordata,20.2
+Q4,Q4T70,Lophopetalum multinervium,17.5
+Q4,Q4T71,Alseodaphne bancana,16.5
+Q4,Q4T72,Neesia malayana,12.1
+Q4,Q4T73,Horsfieldia wallichii,22.1
+Q6,Q6T06,Campnosperma squamatum,31.7
+Q6,Q6T07,Palaquium obovatum,10.3
+Q6,Q6T08,Artocarpus kemando,24.3
+Q6,Q6T09,Pellacalyx axillaris,9.4
+Q6,Q6T10,Nephelium laurinum,9.3
+Q6,Q6T11,Lophopetalum multinervium,38.8
+Q6,Q6T12,Lophopetalum multinervium,28.9
+Q6,Q6T13,Sterculia macrophylla,25.2
+Q6,Q6T14,Syzygium incarnatum,7.2
+Q6,Q6T16,Pternandra coerulescens,7.3
+Q6,Q6T17,Diospyros maingayi,60.6
+Q6,Q6T18,Pometia pinnata,61.5
+Q6,Q6T19,Scaphium affine,7.1
+Q6,Q6T20,Pometia pinnata,66.1
+Q6,Q6T21,Calophyllum rufigemmatum,5.6
+Q6,Q6T22,Lophopetalum multinervium,13.5
+Q6,Q6T23,Myristica elliptica,10.1
+Q6,Q6T24,Diospyros lanceifolia,11.9
+Q6,Q6T25,Knema curtisii,19.5
+Q6,Q6T26,Horsfieldia sparsa,9
+Q6,Q6T27,Myristica elliptica,30.3
+Q6,Q6T28,Neoscortechinia sumatrensis,5.8
+Q6,Q6T29a,Madhuca sp.,67.9
+Q6,Q6T29b,Gymnacranthera forbesii,28.5
+Q6,Q6T30,Madhuca sp.,6.7
+Q6,Q6T31,Madhuca sp.,13.3
+Q6,Q6T32,Artocarpus kemando,42.2
+Q6,Q6T33,Gluta wallichii,6.8
+Q6,Q6T34,Timonius flavescens,9.5
+Q6,Q6T35,Timonius flavescens,6.2
+Q6,Q6T36,Diospyros oblonga,7.3
+Q6,Q6T37,Nephelium laurinum,16.9
+Q9,Q9T01,Campnosperma squamatum,11.2
+Q9,Q9T02,Lophopetalum multinervium,11.5
+Q9,Q9T03,Lophopetalum multinervium,19.3
+Q9,Q9T05,Gynotroches axillaris,12.1
+Q9,Q9T06,Gluta wallichii,6.9
+Q9,Q9T07,Lophopetalum multinervium,13.4
+Q9,Q9T08,Elaeocarpus petiolatus,9.2
+Q9,Q9T10,Neesia malayana,17
+Q9,Q9T11,Lophopetalum multinervium,5.2
+Q9,Q9T12,Lophopetalum multinervium,15.7
+Q9,Q9T13,Canarium pilosum,6.3
+Q9,Q9T14,Gynotroches axillaris,10.6
+Q9,Q9T15,Mussaendopsis beccariana,16.7
+Q9,Q9T16,Lophopetalum multinervium,6.7
+Q9,Q9T17,Lophopetalum multinervium,6.3
+Q9,Q9T20,Lophopetalum multinervium,18.4
+Q9,Q9T24,Diospyros lanceifolia,8.3
+Q9,Q9T27,Macaranga recurvata,23.7
+Q9,Q9T28,Pellacalyx axillaris,22.1
+Q9,Q9T29,Lophopetalum multinervium,10.2
+Q9,Q9T30,Shorea leprosula,28.5
+Q9,Q9T31,Lophopetalum multinervium,12.2
+Q9,Q9T34,Mussaendopsis beccariana,16.8
+Q9,Q9T36,cf. Garcinia rostrata,12.8
+Q9,Q9T37,Lophopetalum multinervium,7
+Q9,Q9T38,Lophopetalum multinervium,13.9
+Q9,Q9T39,Nephelium laurinum,6.2
+Q9,Q9T42,Campnosperma squamatum,15.1
+Q9,Q9T43,Elaeocarpus petiolatus,9
+Q9,Q9T44,Lophopetalum multinervium,13
+Q9,Q9T47,Syzygium lineatum,6
+Q9,Q9T50,Shorea platycarpa,16.8
+Q9,Q9T51,Glochidion rubrum,6.1
+Q9,Q9T52,Campnosperma squamatum,15.4
+Q9,Q9T53,Lophopetalum multinervium,15.6
+Q9,Q9T54,Lophopetalum multinervium,7.6
+Q9,Q9T55,Pellacalyx axillaris,11.8
+Q9,Q9T56,Timonius flavescens,9.6
+Q9,Q9T57,Timonius flavescens,5.4
+Q9,Q9T58,Lophopetalum multinervium,12.5
+Q9,Q9T59,Lophopetalum multinervium,7.3
+Q9,Q9T60,Gynotroches axillaris,5.9
+Q9,Q9T61,Lophopetalum multinervium,9.2
+Q9,Q9T62,Lophopetalum multinervium,8.2
+Q9,Q9T63,Lophopetalum multinervium,16.7
+Q9,Q9T64,Lophopetalum multinervium,14.7
+Q9,Q9T65,Gluta wallichii,8.5
+Q9,Q9T66,Lophopetalum multinervium,5.8
+Q9,Q9T67,Madhuca tomentosa,27
+Q9,Q9T68,Pometia pinnata,36
+Q9,Q9T69,Gluta wallichii,14.2
+Q9,Q9T70,Lophopetalum multinervium,14.8
+Q9,Q9T71,Gluta wallichii,14.7
+Q9,Q9T72,Canarium littorale,12.5
+Q9,Q9T73,Baccaurea bracteata,11.4
+Q9,Q9T74,Gynotroches axillaris,9.4
+Q9,Q9T75,Gluta wallichii,11.5
+Q9,Q9T76,Gluta wallichii,10
+Q9,Q9T77,Gluta wallichii,56.2
+Q9,Q9T78,Lophopetalum multinervium,11.6
+Q9,Q9T79,Gluta wallichii,9.7
+Q9,Q9T80,Horsfieldia cf. sucosa,48.8
+Q9,Q9T81,Knema conferta,13.5
+Q9,Q9T82,Mussaendopsis beccariana,18.2
+Q9,Q9T83,Lophopetalum multinervium,5.2
+Q9,Q9T84,Horsfieldia crassifolia,9.4
+Q9,Q9T85,Lophopetalum multinervium,7.4
+Q9,Q9T87,Campnosperma squamatum,17.7
+Q9,Q9T88,cf. Mangifera griffithii,12.3
+Q9,Q9T89,Radermachera pinnata,6.1
+Q9,Q9T90,Syzygium nemestrinum,6.6
+Q9,Q9T91,Knema conferta,54.8
+Q10,Q10T02,Sterculia macrophylla,12.3
+Q10,Q10T03,Alstonia pneumatophora,42
+Q10,Q10T04,Pandanus atrocarpus,17.3
+Q10,Q10T07,Campnosperma squamatum,20.9
+Q10,Q10T08,Alstonia angustifolia,20.7
+Q10,Q10T10,Gynotroches axillaris,5.7
+Q10,Q10T11,Campnosperma squamatum,10.3
+Q10,Q10T13,Gynotroches axillaris,6.9
+Q10,Q10T14,Gynotroches axillaris,7.4
+Q10,Q10T17,Campnosperma squamatum,32.7
+Q10,Q10T19,Gynotroches axillaris,5.8
+Q10,Q10T20,Gynotroches axillaris,5.8
+Q10,Q10T21,Madhuca tomentosa,14.4
+Q10,Q10T24,Gynotroches axillaris,5.7
+Q10,Q10T26,Alstonia angustifolia,15
+Q10,Q10T28,Campnosperma squamatum,16
+Q10,Q10T29,Aporosa lucida,7.9
+Q10,Q10T30,Campnosperma squamatum,23
+Q10,Q10T31,Gynotroches axillaris,9.2
+Q10,Q10T32,Gynotroches axillaris,7.8
+Q10,Q10T35,Gynotroches axillaris,5.4
+Q10,Q10T37,Gynotroches axillaris,6.4
+Q10,Q10T40,Gynotroches axillaris,8.8
+Q10,Q10T42,Gynotroches axillaris,7.2
+Q10,Q10T46,Bhesa paniculata,17.8
+Q10,Q10T47,Campnosperma squamatum,18.9
+Q10,Q10T48a,Elaeocarpus mastersii,9.2
+Q10,Q10T48b,Elaeocarpus mastersii,6.1
+Q10,Q10T54,Gynotroches axillaris,11.1
+Q10,Q10T55,Campnosperma squamatum,22.5
+Q10,Q10T56,Gynotroches axillaris,6.2
+Q10,Q10T57,Pellacalyx axillaris,6.9
+Q10,Q10T59,Gynotroches axillaris,11.9
+Q10,Q10T60,Gynotroches axillaris,7.3
+Q10,Q10T61,Alstonia angustifolia,19.2
+Q10,Q10T62,Campnosperma squamatum,10.1
+Q10,Q10T65,Campnosperma squamatum,12
+Q10,Q10T68,Elaeocarpus mastersii,12.4
+Q10,Q10T69,Gynotroches axillaris,8
+Q10,Q10T70,Elaeocarpus mastersii,11.5
+Q10,Q10T72,Campnosperma squamatum,24.4
+Q10,Q10T73,Campnosperma squamatum,26.2
+Q10,Q10T74,Campnosperma squamatum,9.5
+Q10,Q10T75,Xanthophyllum flavescens,8.8
+Q10,Q10T77,Aporosa frutescens,5.6
+Q10,Q10T78,Gynotroches axillaris,9.8
+Q10,Q10T79,Gynotroches axillaris,11.8
+Q10,Q10T81,Timonius wallichianus,6.2
+Q10,Q10T82,Adinandra dumosa,9.6
+Q10,Q10T83,Macaranga conifera,26.7
+Q10,Q10T84,Gironniera nervosa,11
+Q10,Q10T85,Gynotroches axillaris,6.2
+Q10,Q10T86,Gynotroches axillaris,6.4
+Q10,Q10T87,Gynotroches axillaris,10
+Q10,Q10T88,Gynotroches axillaris,5.2
+Q10,Q10T90,Gynotroches axillaris,13.4
+Q10,Q10T91,Gynotroches axillaris,8.4
+Q10,Q10T92,Xanthophyllum flavescens,5.9
+Q10,Q10T93,Timonius wallichianus,7.2
+Q10,Q10T94,Xylopia malayana,9.6
+Q10,Q10T95,Elaeocarpus mastersii,11
+Q10,Q10T96,Aporosa lucida,6.2
+Q10,Q10T98,Horsfieldia polyspherula var. sumatrana,11.2
+Q10,Q10T99,Elaeocarpus mastersii,24.1
+Q10,Q10T80a,Gynotroches axillaris,6.6
+Q107,Q107T01,Bhesa paniculata,14.9
+Q107,Q107T02,Turpinia sphaerocarpa,10
+Q107,Q107T03,Knema malayana,6.8
+Q107,Q107T04,Myristica lowiana,8.1
+Q107,Q107T06,Aporosa prainiana,10.9
+Q107,Q107T07,Syzygium glabratum,6.7
+Q107,Q107T08,Aporosa frutescens,8.4
+Q107,Q107T09,Osmelia philippina,5.7
+Q107,Q107T10,Knema malayana,10.8
+Q107,Q107T11,Knema malayana,9.2
+Q107,Q107T13,Knema malayana,6.8
+Q107,Q107T14,Bhesa paniculata,15.6
+Q107,Q107T15,cf. Lindera lucida,45
+Q107,Q107T16,Knema malayana,15.1
+Q107,Q107T17,Canarium pilosum,7.3
+Q107,Q107T19,Aporosa frutescens,13
+Q107,Q107T20,Syzygium cf. maingayi,7.4
+Q107,Q107T21a,Oncosperma horridum,26.1
+Q107,Q107T21b,Oncosperma horridum,20.5
+Q107,Q107T22,Campnosperma squamatum,16.8
+Q107,Q107T23,Aporosa symplocoides,8.8
+Q107,Q107T25,Aporosa prainiana,14
+Q107,Q107T26,Garcinia scortechinii,7.3
+Q107,Q107T27,Adenanthera malayana,61.3
+Q107,Q107T30,Knema malayana,10.4
+Q107,Q107T32,cf. Lithocarpus sp.,27.4
+Q107,Q107T33,Diospyros sumatrana,6
+Q107,Q107T34,Polyalthia lateriflora,5.2
+Q107,Q107T35,Garcinia forbesii,7.9
+Q107,Q107T36,,8.2
+Q107,Q107T37,Aporosa symplocoides,11
+Q107,Q107T38,Diospyros venosa var. venosa,6.2
+Q107,Q107T39,Gironniera nervosa,8.4
+Q107,Q107T40,Xerospermum noronhianum,7.9
+Q107,Q107T43,Strombosia ceylanica,7.5
+Q213,Q213T01,Rhodamnia cinerea,26.2
+Q213,Q213T02,Calophyllum tetrapterum var. tetrapterum,25
+Q213,Q213T03,Litsea lancifolia,6.2
+Q213,Q213T04,Kibatalia maingayi,6.4
+Q213,Q213T05,Kibatalia maingayi,10.9
+Q213,Q213T06,Garcinia forbesii,9.8
+Q213,Q213T07,Rhodamnia cinerea,19.1
+Q213,Q213T08,Rhodamnia cinerea,14.5
+Q213,Q213T09,Vitex pinnata,21.8
+Q213,Q213T10,Kibatalia maingayi,14.7
+Q213,Q213T11,Gironniera nervosa,7.3
+Q213,Q213T15,Rhodamnia cinerea,40.1
+Q213,Q213T16,Archidendron clypearia,13.5
+Q213,Q213T17,Macaranga bancana,11.9
+Q213,Q213T18,Knema laurina,6.7
+Q213,Q213T21,Prunus arborea var. arborea,9.8
+Q213,Q213T22,Prunus polystachya,13.4
+Q213,Q213T23,Aporosa lucida,9
+Q213,Q213T24,Aporosa frutescens,6.3
+Q213,Q213T25,Prunus polystachya,8.9
+Q213,Q213T26,Timonius wallichianus,6.9
+Q213,Q213T27,Prunus polystachya,17.9
+Q213,Q213T28,Prunus polystachya,18.6
+Q213,Q213T29,Macaranga bancana,9.7
+Q213,Q213T30,Gironniera nervosa,5.8
+Q213,Q213T31,Gonystylus confusus,6.2
+Q213,Q213T32,Knema malayana,8.3
+Q213,Q213T33,Prunus polystachya,18.5
+Q213,Q213T34,Gironniera nervosa,15.7
+Q213,Q213T35,Prunus polystachya,7.8
+Q213,Q213T37,Aporosa frutescens,6.3
+Q213,Q213T38,Gironniera nervosa,8.6
+Q213,Q213T40,Rhodamnia cinerea,11.7
+Q213,Q213T41,Prunus polystachya,10.4
+Q213,Q213T42,Macaranga bancana,9.8
+Q213,Q213T44,Prunus polystachya,17.2
+Q213,Q213T45,Macaranga gigantea,6.5
+Q213,Q213T46,Rhodamnia cinerea,6.9
+Q213,Q213T47,Syzygium acuminatissimum,7.4
+Q213,Q213T48,Aidia densiflora,14.2
+Q213,Q213T49,Osmelia philippina,11.9
+Q405,Q405T01,Porterandia anisophylla,5.7
+Q405,Q405T02,Rhodamnia cinerea,36
+Q405,Q405T04,Xanthophyllum flavescens,9.1
+Q405,Q405T06,Litsea firma,33.6
+Q405,Q405T07,Calophyllum teysmannii,20.9
+Q405,Q405T08,Mallotus paniculatus,8.1
+Q405,Q405T09,Archidendron clypearia,14.2
+Q405,Q405T10,Ficus fistulosa,13
+Q405,Q405T11,Glochidion borneense,11.5
+Q405,Q405T12,Glochidion borneense,8
+Q405,Q405T13,Archidendron clypearia,10.2
+Q405,Q405T14,Archidendron clypearia,10.4
+Q405,Q405T16,Bhesa paniculata,5.1
+Q405,Q405T17,Gironniera nervosa,5.3
+Q405,Q405T20,Aporosa frutescens,5.3
+Q405,Q405T23,Bhesa paniculata,14
+Q405,Q405T24,Timonius wallichianus,7.6
+Q405,Q405T25,Bhesa paniculata,12.3
+Q405,Q405T26,Timonius wallichianus,7.5
+Q405,Q405T27,Xanthophyllum flavescens,6.1
+Q405,Q405T28,Porterandia anisophylla,6.4
+Q405,Q405T29,Gironniera nervosa,7.5
+Q405,Q405T31a,Diplospora malaccensis,11.4
+Q405,Q405T31b,Diplospora malaccensis,7.8
+Q405,Q405T32,cf. Bhesa paniculata,11.7
+Q405,Q405T34,Baccaurea parviflora,8.5
+Q405,Q405T35,Canthium glabrum,14.1
+Q405,Q405T36,Diplospora malaccensis,13.4
+Q405,Q405T37,Syzygium lineatum,6.1
+Q405,Q405T39,Bhesa paniculata,24.8
+Q405,Q405T40,Porterandia anisophylla,7.1
+Q405,Q405T42,Timonius wallichianus,8
+Q405,Q405T43,Lindera lucida,28.1
+Q405,Q405T44,Timonius wallichianus,6.4
+Q405,Q405T45,Timonius wallichianus,6
+Q405,Q405T47,Timonius wallichianus,8.7
+Q405,Q405T49,Aporosa frutescens,6.9
+Q405,Q405T50,Rhodamnia cinerea,24.7
+Q408,Q408T02,Gironniera nervosa,9.9
+Q408,Q408T03,Lithocarpus ewyckii,11.2
+Q408,Q408T04,Aporosa frutescens,5.5
+Q408,Q408T06,Rhodamnia cinerea,27.5
+Q408,Q408T09,Drepananthus ramuliflorus,17.4
+Q408,Q408T10,Garcinia parvifolia,12.4
+Q408,Q408T11,Carallia brachiata,5.9
+Q408,Q408T12,Gironniera nervosa,7.6
+Q408,Q408T13,Durio singaporensis,10.6
+Q408,Q408T14,,6.8
+Q408,Q408T15,Litsea grandis,8.9
+Q408,Q408T16,Aporosa symplocoides,6
+Q408,Q408T18a,Oncosperma horridum,22.3
+Q408,Q408T19,Litsea grandis,30.3
+Q408,Q408T21,Campnosperma squamatum,8.1
+Q408,Q408T22,Macaranga bancana,6.7
+Q408,Q408T23,Rhodamnia cinerea,7.8
+Q408,Q408T24a,Rhodamnia cinerea,20.2
+Q408,Q408T24b,Rhodamnia cinerea,9.7
+Q408,Q408T25,Prunus polystachya,7
+Q408,Q408T29,Syzygium inophyllum,11.8
+Q408,Q408T30,Rhodamnia cinerea,30.8
+Q408,Q408T31,Syzygium lineatum,10
+Q408,Q408T32,Calophyllum pulcherrimum,6.2
+Q408,Q408T33,Calophyllum wallichianum var. incrassatum,6.9
+Q408,Q408T34,Dillenia excelsa,34.4
+Q408,Q408T37,Pentace triptera,6.8
+Q408,Q408T38,Aporosa frutescens,9
+Q408,Q408T39,Knema malayana,9
+Q408,Q408T42,Timonius wallichianus,8.7
+Q408,Q408T43,Durio singaporensis,23.8
+Q408,Q408T44,Knema malayana,6.1
+Q408,Q408T45,Aporosa lucida,5.4
+Q408,Q408T46,Lithocarpus ewyckii,6
+Q408,Q408T47,Timonius flavescens,5.9
+Q408,Q408T48,Rhodamnia cinerea,16.8
+Q408,Q408T49,Aporosa symplocoides,6
+Q408,Q408T50,Gironniera nervosa,6.4
+Q10,Q10T101,Gironniera nervosa,5
+Q10,Q10T102a,Gynotroches axillaris,7.7
+Q10,Q10T102b,Gynotroches axillaris,10
+Q10,Q10T103,Caryota mitis,7.5
+Q10,Q10T104,Gynotroches axillaris,5
+Q10,Q10T105,Horsfieldia polyspherula var. sumatrana,5.4
+Q3,Q3T100,,6.3
+Q3,Q3T102,,7.3
+Q3,Q3T103,Macaranga griffithiana,5.3
+Q3,Q3T104,,6.1
+Q3,Q3T105,Strombosia ceylanica,5.8
+Q3,Q3T107,,5
+Q3,Q3T108,,5.3
+Q3,Q3T109,,5.5
+Q3,Q3T110,Xanthophyllum flavescens,5.8
+Q3,Q3T111,,5
+Q3,Q3T113,Calophyllum pulcherrimum,6.6
+Q3,Q3T117,Pometia pinnata,5.3
+Q3,Q3T118,,5
+Q3,Q3T119,,5.2
+Q3,Q3T120,,5
+Q3,Q3T121,,5.5
+Q3,Q3T122,,5.2
+Q3,Q3T123,,5.7
+Q4,Q4T74,Strombosia ceylanica,5
+Q4,Q4T75,,5
+Q4,Q4T76,Macaranga recurvata,5.7
+Q4,Q4T77,Symplocos fasciculata,5.3
+Q4,Q4T78,,7.1
+Q4,Q4T80,Dracaena sp.,5.1
+Q6,Q6T38,,7.2
+Q6,Q6T39,,18.2
+Q6,Q6T03,Carallia brachiata,18
+Q9,Q9T92,Lophopetalum multinervium,5
+Q9,Q9T93,Gluta wallichii,5
+Q9,Q9T94,,16
+Q9,Q9T95,,8.1
+Q107,Q107T44,Knema malayana,5
+Q107,Q107T45,,5.3
+Q107,Q107T47,Aglaia yzermannii,5.6
+Q107,Q107T48,Osmelia philippina,6.6
+Q107,Q107T49,,5.8
+Q107,Q107T50,,5
+Q107,Q107T51,,16.2
+Q107,Q107T52,Gironniera nervosa,6.5
+Q107,Q107T53a,Oncosperma horridum,17.2
+Q107,Q107T53b,Oncosperma horridum,12.3
+Q405,Q405T52,,6.1
+Q405,Q405T53,,7
+Q405,Q405T54,,7
+Q405,Q405T55,,5.2
+Q405,Q405T56,Bhesa paniculata,5.2
+Q405,Q405T57,,6.2
+Q405,Q405T58,Bhesa paniculata,11
+Q405,Q405T59,,6.7
+Q405,Q405T60,Xanthophyllum flavescens,5.5
+Q405,Q405T61,Macaranga bancana,5.2
+Q408,Q408T28,Rhodamnia cinerea,30.6
+Q408,Q408T53,Scorodocarpus borneensis,6.6
+Q408,Q408T55,Lithocarpus ewyckii,6.1
+Q408,Q408T18b,Oncosperma horridum,5.6
+Q408,Q408T18c,Oncosperma horridum,6.7
+Q408,Q408T18d,Oncosperma horridum,8.6
+Q408,Q408T56,Gironniera nervosa,6.1
+Q213,Q213T50,Gironniera nervosa,5.4
+Q213,Q213T51,,5.2
+Q213,Q213T52,Oncosperma horridum,7.3
+Q213,Q213T53,Knema malayana,5.2
+Q213,Q213T54,Horsfieldia punctatifolia,6.4
+Q213,Q213T55,Gironniera nervosa,5
+Q213,Q213T56a,Oncosperma horridum,5.6
+Q213,Q213T56b,Oncosperma horridum,6.6
+Q213,Q213T56c,Oncosperma horridum,16.8
+Q213,Q213T57,Elaeocarpus mastersii,13.4
+Q213,Q213T58,Prunus polystachya,9.5
+Q213,Q213T59,,7.4
+Q213,Q213T61,Archidendron clypearia,11.4
+Q213,Q213T62,,7.2
+Q213,Q213T63,,6.1
+Q1,Q1T64,Pternandra echinata,5.2
+Q1,Q1T17b,Pternandra echinata,6.7
+Q1,Q1T65,Xanthophyllum flavescens,5.9
+Q1,Q1T66,,5.6
+Q1,Q1T67,Timonius wallichianus,6.7
+Q1,Q1T68,Xanthophyllum flavescens,6.8
+Q1,Q1T69,Horsfieldia punctatifolia,5.8
+Q1,Q1T70,Pternandra echinata,5
+Q1,Q1T71,Bhesa paniculata,6.8
+Q1,Q1T72,Xanthophyllum flavescens,6.8
+Q1,Q1T02b,Oncosperma horridum,7.8
+Q1,Q1T25b,Aporosa frutescens,5
+Q213,Q213T60,Pentace triptera,24.4
