@@ -16,4 +16,16 @@ Leaf lamina C and N content are divided into:
   * Adenanthera malayana where a third was sent in because one of the two samples differed more than expected.
   * There were multiple _Madhuca_ sp. because some were originally thought to be _Gluta wallichii_ but the identification was corrected later.
 
+## Historical scripts
+
+`scripts/historical/` holds byte-for-byte copies of the scripts as first committed to this repository (commit `74befc2`, 31 July 2025). They are the closest available record of the code that produced the published results, and are kept unmodified as the reference for reproducing the published analysis. Do not edit them. The copies directly under `scripts/` were edited after that date and no longer represent the published analysis.
+
+The historical scripts were run interactively and do not run from top to bottom as-is; they also expect a flat working directory (`setwd()` to a private folder). Run order:
+
+1. `part I (updated with spp by plot).R` writes `litter.production w species-plot CAA Feb21.csv`.
+2. `leaf traits updated with spp by plot and iv wet.R` produces the leaf trait PCA, the component models, the structural equation models and the model selection.
+3. `GAMM only.R` produces the phenology GAMM, reading `data for GAMM.csv`.
+
+Known issue: in `part I`, the species-level leaf C:N ratio is computed as the mean over all rows of `CHNS v3.csv`, which mixes fresh and senesced leaf samples (now split into `data/CHNS v3_fresh.csv` and `data/CHNS v3_senesced.csv`).
+
 (To be continued...)
