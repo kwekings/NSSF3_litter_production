@@ -1,0 +1,100 @@
+section,item,published,reproduced,match
+Species-plot data,rows (Feb21 CSV),79,79,TRUE
+Species-plot data,rows matched to Feb21 CSV,79,79,TRUE
+Species-plot data,"max abs difference, all columns",0,0,TRUE
+Fig. 2,mean canopy production (g m-2 yr-1),768,768,TRUE
+Fig. 2,SE of canopy production,48,48,TRUE
+Fig. 2,total litter (kg),30.7,30.7,TRUE
+Fig. 2,"t, all leaves",1.33,1.33,TRUE
+Fig. 2,"P, all leaves",0.221,0.221,TRUE
+Fig. 2,"t, excluding lianas",0.49,0.49,TRUE
+Fig. 2,"P, excluding lianas",0.639,0.639,TRUE
+Fig. 2,"t, BA-normalised",6.81,6.81,TRUE
+PCA,species in PCA,25,25,TRUE
+PCA,PC1 variance (%),48.3,48.3,TRUE
+PCA,PC2 variance (%),38.7,38.7,TRUE
+Path-model data,species,25,25,TRUE
+Path-model data,species-plot rows,69,69,TRUE
+Component models,SLA -> SIV estimate,-0.29,-0.29,TRUE
+Component models,SLA -> SIV lower,-0.41,-0.41,TRUE
+Component models,SLA -> SIV upper,-0.17,-0.17,TRUE
+Component models,PC1 -> SIV estimate,0.07,0.07,TRUE
+Component models,PC1 -> SIV lower,0.04,0.04,TRUE
+Component models,PC1 -> SIV upper,0.11,0.1,FALSE
+Component models,LT -> SIV estimate,1.2,1.2,TRUE
+Component models,LT -> SIV lower,0.44,0.44,TRUE
+Component models,LT -> SIV upper,1.95,1.95,TRUE
+Component models,C:N -> SIV estimate,0.009,0.009,TRUE
+Component models,C:N -> SIV lower,0.004,0.004,TRUE
+Component models,C:N -> SIV upper,0.013,0.013,TRUE
+Component models,SIV -> canopy estimate,-1.67,-1.67,TRUE
+Component models,SIV -> canopy lower,-4.37,-4.37,TRUE
+Component models,SIV -> canopy upper,1.04,1.04,TRUE
+Component models,BA -> canopy estimate,0.93,0.93,TRUE
+Component models,BA -> canopy lower,0.61,0.61,TRUE
+Component models,BA -> canopy upper,1.25,1.25,TRUE
+Component models,SLA -> SIV R² (%),24.1,24.1,TRUE
+Component models,PC1 -> SIV R² (%),21.82,21.82,TRUE
+Component models,LT -> SIV R² (%),12.49,12.49,TRUE
+Component models,CNratio -> SIV R² (%),18.25,18.25,TRUE
+Component models,PC2 -> SIV R² (%),6.06,6.06,TRUE
+Component models,SIV -> LDMC R² (%),3.77,3.77,TRUE
+Table 1,rank 1 AICc,27.09,27.09,TRUE
+Table 1,rank 1 dAICc,0,0,TRUE
+Table 1,rank 1 weight,0.313,0.313,TRUE
+Table 1,rank 1 Fisher's C,0.383,0.383,TRUE
+Table 1,rank 2 AICc,28.41,28.41,TRUE
+Table 1,rank 2 dAICc,1.32,1.32,TRUE
+Table 1,rank 2 weight,0.162,0.162,TRUE
+Table 1,rank 2 Fisher's C,1.469,1.469,TRUE
+Table 1,rank 3 AICc,29.78,29.78,TRUE
+Table 1,rank 3 dAICc,2.69,2.69,TRUE
+Table 1,rank 3 weight,0.082,0.082,TRUE
+Table 1,rank 3 Fisher's C,0.173,0.173,TRUE
+Table 1,rank 4 AICc,30.08,30.08,TRUE
+Table 1,rank 4 dAICc,2.98,2.98,TRUE
+Table 1,rank 4 weight,0.071,0.071,TRUE
+Table 1,rank 4 Fisher's C,2.849,2.849,TRUE
+Table 1,rank 5 AICc,30.3,30.3,TRUE
+Table 1,rank 5 dAICc,3.2,3.2,TRUE
+Table 1,rank 5 weight,0.063,0.063,TRUE
+Table 1,rank 5 Fisher's C,3.027,3.027,TRUE
+Table 1,rank 6 AICc,30.34,30.34,TRUE
+Table 1,rank 6 dAICc,3.25,3.25,TRUE
+Table 1,rank 6 weight,0.062,0.062,TRUE
+Table 1,rank 6 Fisher's C,0.627,0.627,TRUE
+Table 1,rank 7 AICc,30.49,30.49,TRUE
+Table 1,rank 7 dAICc,3.39,3.39,TRUE
+Table 1,rank 7 weight,0.057,0.057,TRUE
+Table 1,rank 7 Fisher's C,0.743,0.743,TRUE
+Table 1,rank 8 AICc,31.05,31.05,TRUE
+Table 1,rank 8 dAICc,3.96,3.96,TRUE
+Table 1,rank 8 weight,0.043,0.043,TRUE
+Table 1,rank 8 Fisher's C,3.651,3.651,TRUE
+Table 1,rank 9 AICc,32.39,32.39,TRUE
+Table 1,rank 9 dAICc,5.3,5.3,TRUE
+Table 1,rank 9 weight,0.022,0.022,TRUE
+Table 1,rank 9 Fisher's C,4.758,4.758,TRUE
+Table 1,rank 10 AICc,32.59,32.59,TRUE
+Table 1,rank 10 dAICc,5.5,5.5,TRUE
+Table 1,rank 10 weight,0.02,0.02,TRUE
+Table 1,rank 10 Fisher's C,2.453,2.453,TRUE
+Table 1,rank 25 AICc,38.61,38.61,TRUE
+Table 1,rank 25 dAICc,11.51,11.51,TRUE
+Table 1,rank 25 weight,0.001,0.001,TRUE
+Fig. 5,"summed weight (%), BH vi",61.3,61.3,TRUE
+Fig. 5,"summed weight (%), BH i",19.2,19.2,TRUE
+Fig. 5,"summed weight (%), BH vii",9.3,9.3,TRUE
+Fig. 5,"summed weight (%), BH ii",7.8,7.8,TRUE
+GAMM data,rows (data for GAMM.csv),264,264,TRUE
+GAMM data,rows matched,264,264,TRUE
+GAMM data,"max abs difference, all columns",0,0,TRUE
+GAMM,top-model weight > 0.90,1,1,TRUE
+GAMM,dAICc of 2nd model,5.47,5.47,TRUE
+GAMM,adj R² (LR) of top model (%),75,75,TRUE
+GAMM,dry/wet multiplier,2.01,2.02,FALSE
+GAMM,dry/wet lower 95%,1.57,1.58,FALSE
+GAMM,dry/wet upper 95%,2.57,2.59,FALSE
+GAMM,temperature estimate,0.4,0.4,TRUE
+GAMM,temperature lower 95%,0.27,0.26,FALSE
+GAMM,temperature upper 95%,0.53,0.53,TRUE
