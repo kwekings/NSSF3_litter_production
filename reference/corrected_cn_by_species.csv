@@ -1,26 +1,26 @@
-species,code,CN_hist,CN_fresh,n_fresh,n_senesced,samples,difference
-Campnosperma squamatum,CSQ,50.2334754775,34.645522385,2,2,fresh + senesced,-15.587953092500001
-Gluta wallichii,GWA,48.32411271,33.22933653,2,2,fresh + senesced,-15.094776180000004
-Pometia pinnata,PPI,43.1445102925,31.80631579,2,2,fresh + senesced,-11.338194502500002
-Madhuca tomentosa,MTO,37.619276992857145,28.23844239,2,5,fresh + senesced,-9.380834602857146
-Rhodamnia cinerea,RCI,47.760605975,38.9375703,2,2,fresh + senesced,-8.823035675
-Prunus polystachya,PPO,34.82430529,26.836898395,2,2,fresh + senesced,-7.9874068949999995
-Lophopetalum multinervium,LMU,31.25958531,24.258335525,2,2,fresh + senesced,-7.001249784999999
-Archidendron clypearia,ACL,23.7772643625,19.15267176,2,2,fresh + senesced,-4.624592602499998
-Xanthophyllum flavescens,XFL,19.937169915,17.0322392,2,2,fresh + senesced,-2.904930714999999
-Gironniera nervosa,GNE,20.72142869,17.82716655,2,2,fresh + senesced,-2.8942621399999986
-Lithocarpus ewyckii,LEW,32.8977358375,32.445078785,2,2,fresh + senesced,-0.4526570525000011
-Bhesa paniculata,BPA,26.0771882025,25.980932205000002,2,2,fresh + senesced,-0.09625599749999836
-Aporosa frutescens,AFR,20.676469625,20.676469625,2,0,fresh only,0
-Elaeocarpus mastersii,EMA,33.139649925,33.139649925,2,0,fresh only,0
-Hevea brasiliensis,HBR,12.87183612,12.87183612,2,0,fresh only,0
-Pternandra echinata,PEC,28.903591955000003,28.903591955000003,2,0,fresh only,0
-Timonius wallichianus,TWA,24.92279412,24.92279412,2,0,fresh only,0
-Gynotroches axillaris,GAX,29.169451565000003,29.169451565000003,2,0,fresh only,0
-Knema malayana,KMA,24.687700319999998,24.687700319999998,2,0,fresh only,0
-Calophyllum tetrapterum var. tetrapterum,CTE,49.83720091,49.83720091,2,0,fresh only,0
-Aporosa falcifera,AFA,29.143333335,29.143333335,2,0,fresh only,0
-Lindera lucida,LLU,25.60077051,25.60077051,2,0,fresh only,0
-Litsea firma,LFI,28.65178571,28.65178571,2,0,fresh only,0
-Mallotus paniculatus,MPA,16.176714515,16.176714515,2,0,fresh only,0
-Pentace triptera,PTR,46.37354942,NA,0,2,senesced only,NA
+code,species,CN_hist,CN_fresh,n_fresh,n_senesced,samples,difference
+CSQ,Campnosperma squamatum,50.2334754775,34.645522385,2,2,fresh + senesced,-15.587953092500001
+GWA,Gluta wallichii,48.32411271,33.22933653,2,2,fresh + senesced,-15.094776180000004
+PPI,Pometia pinnata,43.1445102925,31.80631579,2,2,fresh + senesced,-11.338194502500002
+MTO,Madhuca tomentosa,37.619276992857145,28.23844239,2,5,fresh + senesced,-9.380834602857146
+RCI,Rhodamnia cinerea,47.760605975,38.9375703,2,2,fresh + senesced,-8.823035675
+PPO,Prunus polystachya,34.82430529,26.836898395,2,2,fresh + senesced,-7.9874068949999995
+LMU,Lophopetalum multinervium,31.25958531,24.258335525,2,2,fresh + senesced,-7.001249784999999
+ACL,Archidendron clypearia,23.7772643625,19.15267176,2,2,fresh + senesced,-4.624592602499998
+XFL,Xanthophyllum flavescens,19.937169915,17.0322392,2,2,fresh + senesced,-2.904930714999999
+GNE,Gironniera nervosa,20.72142869,17.82716655,2,2,fresh + senesced,-2.8942621399999986
+LEW,Lithocarpus ewyckii,32.8977358375,32.445078785,2,2,fresh + senesced,-0.4526570525000011
+BPA,Bhesa paniculata,26.0771882025,25.980932205000002,2,2,fresh + senesced,-0.09625599749999836
+AFA,Aporosa falcifera,29.143333335,29.143333335,2,0,fresh only,0
+AFR,Aporosa frutescens,20.676469625,20.676469625,2,0,fresh only,0
+CTE,Calophyllum tetrapterum var. tetrapterum,49.83720091,49.83720091,2,0,fresh only,0
+EMA,Elaeocarpus mastersii,33.139649925,33.139649925,2,0,fresh only,0
+GAX,Gynotroches axillaris,29.169451565000003,29.169451565000003,2,0,fresh only,0
+HBR,Hevea brasiliensis,12.87183612,12.87183612,2,0,fresh only,0
+KMA,Knema malayana,24.687700319999998,24.687700319999998,2,0,fresh only,0
+LFI,Litsea firma,28.65178571,28.65178571,2,0,fresh only,0
+LLU,Lindera lucida,25.60077051,25.60077051,2,0,fresh only,0
+MPA,Mallotus paniculatus,16.176714515,16.176714515,2,0,fresh only,0
+PEC,Pternandra echinata,28.903591955000003,28.903591955000003,2,0,fresh only,0
+TWA,Timonius wallichianus,24.92279412,24.92279412,2,0,fresh only,0
+PTR,Pentace triptera,46.37354942,NA,0,2,senesced only,NA

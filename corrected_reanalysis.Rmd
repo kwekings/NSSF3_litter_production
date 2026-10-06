@@ -1,12 +1,13 @@
 ---
-title: "Corrected reanalysis of Lam et al. (2022)"
-subtitle: "Fresh-leaf C:N and other corrections, compared step by step with the published analysis"
+title: "Correction to: Habitat adaptation mediates the influence of leaf traits on canopy productivity: evidence from a tropical freshwater swamp forest"
+subtitle: "Draft erratum, with the corrected analysis and notes for co-authors"
 date: "`r format(Sys.Date(), '%d %B %Y')`"
+params:
+  cte: "fresh"
 output:
   html_document:
     toc: true
     toc_float: true
-    number_sections: true
 ---
 
 ```{r setup, include = FALSE}
@@ -22,43 +23,28 @@ library(knitr)
 library(kableExtra)
 library(lme4)
 library(piecewiseSEM)
+
+# Which corrected analysis the erratum reports: CTE's two CHNS samples
+# treated as fresh leaves ("fresh", scenario B2) or as not fresh, so that
+# CTE has no fresh-leaf C:N ("excluded", scenario B2-CTE). Knit with
+# rmarkdown::render(..., params = list(cte = "excluded")) to switch.
+stopifnot(params$cte %in% c("fresh", "excluded"))
+finalScenario <- if (params$cte == "fresh") "B2" else "B2-CTE"
+f <- function(x, digits = 2) sprintf(paste0("%.", digits, "f"), x)
 ```
 
-# Purpose
-
-`historical_reproduction.Rmd` reproduces the published analysis of Lam et al. (2022, *Ecosystems* 25: 1006–1019) as it was run. This notebook corrects it and measures what each correction changes. The main correction is that the species' leaf C:N ratios, which the Methods describe as measured on fresh leaves, mixed fresh and senesced leaves for 13 of the 25 analysis species (one of them, *Pentace triptera*, had senesced leaves only).
-
-The corrections are applied one step at a time, so that each effect can be reported on its own:
-
-```{r scenarios-table}
-scenarioInfo <- tribble(
-  ~scenario, ~description,
-  "A",   "Historical analysis, as published (must reproduce reference/).",
-  "A24", "A on the 24 species with a fresh-leaf C:N, i.e. without Pentace triptera (PTR); isolates the effect of the smaller species set.",
-  "B1-ovr", "A24 with fresh-leaf C:N only, but keeping the historical CTE override (CTE enters the models with the species mean C:N); separates the effect of the fresh-leaf values from that of removing the override.",
-  "B1",  "A24 with fresh-leaf C:N only (mean of per-sample ratios), no CTE override, and the duplicated SEM (model 55) fixed.",
-  "B2",  "B1 plus the Madhuca fix: the Q6 'Madhuca sp.' trees are the same taxon, which restores the Q6 Madhuca row. The final corrected analysis.",
-  "B2-CTE", "Sensitivity: B2 with the C:N of Calophyllum tetrapterum (CTE) set to NA, because its two samples are only inferred to be fresh."
-)
-scenarioInfo |>
-  kable(col.names = c("Scenario", "Description")) |>
-  kable_styling(full_width = FALSE)
+```{css}
+.preamble { background: #F4F6F8; padding: 10px 14px; border-radius: 4px; }
+.erratum { border-left: 4px solid #2166AC; padding-left: 14px; }
 ```
 
-Decisions behind these steps (recorded in the working notes, D1–D5 and D11):
+::: {.preamble}
+**About this document (not part of the erratum).** This is a draft correction to Lam et al. (2022, *Ecosystems* 25: 1006–1019), written as it might be submitted to the journal, followed by afternotes for the co-authors that show how each correction changes the results. All numbers are computed on knitting from the original data. The published analysis is reproduced in `historical_reproduction.Rmd`.
 
-- **PTR (D1).** *Pentace triptera* has no fresh-leaf C:N, so its fresh C:N is `NA`. It drops from the C:N analyses and from the PCA, which needs complete cases.
-- **Common data set (D11).** AICc can only be compared among models fitted to the same data, and the 108 SEMs are ranked together. So every model in B is fitted to the complete-case species set: PTR's two species–plot rows drop from all of them, not only from the C:N and PC models. This is provisional; imputing PTR's C:N is an alternative to consider later.
-- **CTE (D2).** The two *Calophyllum tetrapterum* samples sit in the fresh-leaf block but have senesced-like N; their status is "inferred fresh, pending verification". B uses them as fresh and drops the historical override; B2-CTE treats them as missing.
-- **Aggregation (D3).** As historically, species C:N is the mean of the per-sample ratios; only the rows used change.
-- ***Madhuca* (D4).** All *Madhuca* in the plots, including the three Q6 trees named "Madhuca sp.", are one taxon. It is applied as a separate step (B2).
-- **Model 55 (D5).** The plot-type SEM for hypothesis i with SLA pairs the canopy model with SIV → SLA instead of SLA → SIV. B uses the intended model.
+This version reports the corrected analysis with the two *Calophyllum tetrapterum* (CTE) leaf samples treated as **`r if (params$cte == "fresh") "fresh leaves" else "not fresh leaves (CTE excluded)"`** (scenario `r finalScenario` in the afternotes). Whether these samples were fresh is unresolved, and it matters for the C:N result ([Afternote 5](#afternote-5)); the document can be re-knitted for the other case. Line numbers ("l.") refer to the accepted manuscript (https://eprints.soton.ac.uk/451090/).
+:::
 
-Unchanged from the published analysis: total canopy production and its *t*-tests (Fig. 2), and the phenology GAMM (Fig. 3). Neither uses C:N or species-level tree names. The square-root transformation of SIV, which the paper does not mention, and the inverse-plot-number weights are kept throughout, because they are part of the published model rather than errors.
-
-# Leaf C:N: historical versus fresh-leaf values
-
-```{r cn}
+```{r cn, include = FALSE}
 chns <- bind_rows(
   mutate(read.csv("data/CHNS v3_senesced.csv"), leaf = "senesced"),
   mutate(read.csv("data/CHNS v3_fresh.csv"), leaf = "fresh"))
@@ -74,56 +60,7 @@ cnBySpecies <- chns |>
             .by = Species)
 ```
 
-```{r cn-table}
-# Analysis species (published set), from the historical reference output
-speciesHist <- read_csv("reference/historical_species_traits_pca.csv",
-                        show_col_types = FALSE)
-sppPlotHist <- read_csv("reference/historical_species_plot.csv",
-                        show_col_types = FALSE)
-cnCompare <- sppPlotHist |>
-  distinct(species, code) |>
-  filter(code %in% speciesHist$code) |>
-  left_join(cnBySpecies, by = c(species = "Species")) |>
-  mutate(samples = case_when(
-           n_fresh == 0 ~ "senesced only",
-           n_senesced == 0 ~ "fresh only",
-           .default = "fresh + senesced"),
-         difference = CN_fresh - CN_hist) |>
-  arrange(samples, difference)
-
-cnCompare |>
-  select(species, code, n_fresh, n_senesced, samples, CN_hist, CN_fresh,
-         difference) |>
-  kable(digits = 2,
-        col.names = c("Species", "Code", "Fresh samples",
-                      "Senesced samples", "Samples used historically",
-                      "C:N, historical", "C:N, fresh only",
-                      "Difference")) |>
-  kable_styling(font_size = 12) |>
-  scroll_box(height = "400px")
-```
-
-Of the 25 analysis species, `r sum(cnCompare$samples == "fresh + senesced")` had their C:N averaged over fresh and senesced leaves, `r sum(cnCompare$samples == "senesced only")` (*Pentace triptera*) over senesced leaves only, and `r sum(cnCompare$samples == "fresh only")` over fresh leaves only. Among the mixed species, the fresh-leaf value is lower by `r round(-max(cnCompare$difference[cnCompare$samples == "fresh + senesced"]), 2)` to `r round(-min(cnCompare$difference[cnCompare$samples == "fresh + senesced"]), 2)`.
-
-```{r fig-cn, fig.width = 6, fig.height = 5, fig.cap = "Species C:N used in the published analysis against fresh-leaf C:N. The line is 1:1. PTR has no fresh-leaf value."}
-cnCompare |>
-  filter(!is.na(CN_fresh)) |>
-  ggplot(aes(CN_fresh, CN_hist, colour = samples, label = code)) +
-  geom_abline(linetype = 2) +
-  geom_text(size = 3.5) +
-  scale_colour_manual(values = c("fresh + senesced" = "#B2182B",
-                                 "fresh only" = "grey40")) +
-  labs(x = "C:N, fresh leaves only", y = "C:N, as published",
-       colour = "Samples used\nhistorically") +
-  coord_equal() +
-  theme_bw()
-```
-
-# Species–plot data
-
-The species–plot table is rebuilt as in `historical_reproduction.Rmd` (see there for the step-by-step explanation), with one switch for the *Madhuca* fix.
-
-```{r spp-plot}
+```{r spp-plot, include = FALSE}
 lamina <- read.csv("data/Cleaned lamina+PJ.csv") |>
   mutate(date1 = as.Date(General.date, format = "%d/%m/%Y"))
 treeRaw <- read.csv("data/ten plot trees.csv") |>
@@ -194,13 +131,7 @@ madhucaNew <- anti_join(sppPlot$madhucaFixed, sppPlot$asPublished,
 stopifnot(nrow(madhucaNew) == 1, madhucaNew$plot == "Q6")
 ```
 
-The *Madhuca* fix adds one species–plot row, *Madhuca* in Q6, with `r round(madhucaNew$litter.collection)` g of leaf litter and `r format(round(madhucaNew$ten.ba), big.mark = ",")` cm^2^ of BA from the three "Madhuca sp." trees. Its SIV is the SSI file's "Madhuca sp." value, as for the other *Madhuca* rows; whether that value already pools all *Madhuca* trees in the 40 plots it was computed from could not be checked here, because those data are not in this repository.
-
-# The analysis pipeline
-
-One function runs the path analysis for a scenario: PCA, component models, the 108 SEMs and model selection. Its steps are exactly those of `historical_reproduction.Rmd`, with switches for the corrections.
-
-```{r traits}
+```{r traits, include = FALSE}
 # Species trait means (unchanged by any correction)
 traitsHj <- read.csv("data/HJ leaf data full.csv") |>
   mutate(across(c(thickness, ldmc, SLA),
@@ -224,7 +155,7 @@ loadingsHist <- read_csv("reference/historical_pca_loadings.csv",
                          show_col_types = FALSE)
 ```
 
-```{r pipeline}
+```{r pipeline, include = FALSE}
 traitNames <- c("SLA", "LT", "LDMC", "CNratio", "PC1", "PC2")
 plotTypes <- c(noPlot = FALSE, plot = TRUE)
 
@@ -353,8 +284,6 @@ runScenario <- function(sppPlot, cn, cteOverride, fixModel55) {
 }
 ```
 
-# Running the scenarios
-
 ```{r run-scenarios, cache = TRUE}
 # CACHED (about 20 min to run). knitr cannot track the uncached chunks this
 # depends on, so delete corrected_reanalysis_cache/ after changing any chunk
@@ -383,49 +312,471 @@ results <- list(
                          cteOverride = FALSE, fixModel55 = TRUE))
 ```
 
-```{r check-a}
-# Scenario A must reproduce the historical reference outputs
+```{r check-a, include = FALSE}
+# Scenario A must reproduce the historical reference outputs. AIC.psem()
+# rounds AICc to 3 dp, and the d-separation refits are sensitive in that
+# last digit to how the data reach the model call, so a difference of a
+# few thousandths is tolerated; ranks and weights must be identical.
 semHist <- read_csv("reference/historical_sem_table.csv",
                     show_col_types = FALSE)
 aCheck <- results$A$sems |>
   select(id, AICc, rank, weight) |>
   inner_join(select(semHist, id, AICc, rank, weight), by = "id",
              suffix = c("", "_ref"))
-# AIC.psem() rounds AICc to 3 dp, and the d-separation refits are
-# sensitive in that last digit to how the data reach the model call, so a
-# difference of a few thousandths is tolerated; ranks must be identical.
 aMaxDiff <- max(abs(aCheck$AICc - aCheck$AICc_ref))
 stopifnot(nrow(aCheck) == 108, aMaxDiff <= 0.005,
           all(aCheck$rank == aCheck$rank_ref),
           all(aCheck$weight == aCheck$weight_ref))
 ```
 
-Scenario A reproduces the historical analysis: all 108 SEMs have the same rank and Akaike weight as in `reference/historical_sem_table.csv`, and their AICc values differ by at most `r aMaxDiff`, in the third decimal, where `AIC.psem()` rounds.
+```{r values, include = FALSE}
+# Values for the erratum text, from the final scenario and, for the
+# published values, from scenario A
+fin <- results[[finalScenario]]
+pub <- results$A
 
-```{r sample-sizes}
-scenarioOrder <- names(results)
-imap(results, \(r, s) tibble(
-  scenario = s,
-  species = n_distinct(r$litter$species),
-  rows = nrow(r$litter),
-  CN_CTE = if (any(r$litter$code == "CTE")) {
-    unique(r$litter$CNratio[r$litter$code == "CTE"])
-  } else NA_real_,
-  PC1 = 100 * summary(r$pca)$importance[2, "PC1"],
-  PC2 = 100 * summary(r$pca)$importance[2, "PC2"],
-  semsWithAICc = sum(!is.na(r$sems$AICc)))) |>
-  list_rbind() |>
-  kable(digits = 2,
-        col.names = c("Scenario", "Species", "Species–plot rows",
-                      "C:N of CTE in models", "PC1 (%)", "PC2 (%)",
-                      "SEMs with AICc"),
-        caption = "Data and PCA by scenario.") |>
-  kable_styling(full_width = FALSE)
+coefRow <- function(mod, term) {
+  cf <- coef(summary(mod))[term, ]
+  est <- cf[["Estimate"]]
+  se <- cf[["Std. Error"]]
+  tibble(estimate = est, lwr = est - 1.96 * se, upr = est + 1.96 * se,
+         R2 = if (inherits(mod, "lm")) summary(mod)$r.squared else NA)
+}
+# Coefficient with 95% CI, formatted as in the paper
+coefText <- function(r, term, digits = 2) {
+  x <- if (term == "SIV") coefRow(r$modL_siv$noPlot, "iv.wet")
+       else if (term == "BA") coefRow(r$modL_siv$noPlot, "logba")
+       else coefRow(r$modD[[term]], term)
+  sprintf(paste0("coefficient = %.", digits, "f; 95%% CI = [%.", digits,
+                 "f, %.", digits, "f]"), x$estimate, x$lwr, x$upr)
+}
+coefEst <- function(r, term) {
+  if (term == "SIV") fixef(r$modL_siv$noPlot)[["iv.wet"]]
+  else coef(r$modD[[term]])[[term]]
+}
+traitLab <- c(SLA = "SLA", LT = "leaf thickness (LT)", LDMC = "LDMC",
+              CNratio = "C:N ratio", PC1 = "PC1", PC2 = "PC2")
+ordinal <- function(n) {
+  words <- c("first", "second", "third", "fourth", "fifth", "sixth",
+             "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth")
+  if (n <= length(words)) words[n] else paste0(n, "th")
+}
+rankOf <- function(r, bh, tr, pt = "noPlot") {
+  with(r$sems, rank[BH == bh & trait == tr & plotType == pt])
+}
+sowOf <- function(r, bh) 100 * r$sow$SoW[r$sow$BH == bh]
+
+nRows <- nrow(fin$litter)
+nSpecies <- n_distinct(fin$litter$species)
+topModel <- filter(fin$sems, rank == 1)
+stopifnot(topModel$BH == "vi", topModel$plotType == "noPlot")
+topTrait <- topModel$trait
+cnFin <- coefRow(fin$modD$CNratio, "CNratio")
+cnPub <- coefRow(pub$modD$CNratio, "CNratio")
+# Is the C:N result materially weaker than published?
+cnWeaker <- cnFin$R2 < 0.5 * cnPub$R2
+firstPlotType <- slice_min(filter(fin$sems, plotType == "plot"), rank)
+sowFin <- arrange(fin$sow, desc(SoW))
 ```
 
-# What changes
+# Correction to: Habitat adaptation mediates the influence of leaf traits on canopy productivity: evidence from a tropical freshwater swamp forest {.unnumbered}
 
-## PCA
+::: {.erratum}
+
+Weng Ngai Lam, Pin Jia Chan, Ying Ying Ting, Hong Jhun Sim, Jun Jie Lian, Rie Chong, Nur Estya Rahman, Lorraine Wen Ai Tan, Qian Yi Ho, Zhongyu Chiam, Srishti Arora, Hao Ran Lai, Sorain J. Ramchunder, Kelvin S.-H. Peh, Yixiong Cai, Kwek Yan Chong
+
+Correction to: *Ecosystems* (2022) 25: 1006–1019, https://doi.org/10.1007/s10021-021-00697-7
+
+In the original article, the leaf carbon:nitrogen (C:N) ratio of each species was calculated as the mean over all of its CHNS samples. For `r sum(cnBySpecies$n_fresh > 0 & cnBySpecies$n_senesced > 0 & cnBySpecies$Species %in% pub$litter$species)` of the 25 study species these included senesced as well as fresh leaves, and one species, *Pentace triptera*, was represented by senesced leaves only. This contradicts the Methods, which state that C and N were measured on fresh leaves, and it affects the principal component analysis and every structural equation model (SEM) that used C:N or the principal components. We have repeated these analyses with C:N ratios calculated from fresh-leaf samples only. Because the SEMs are compared by AICc, which requires a common data set, *Pentace triptera* `r if (params$cte == "excluded") "and *Calophyllum tetrapterum*, whose two leaf samples were not fresh, were" else "was"` excluded from all SEMs.
+
+In repeating the analyses, we also corrected three further errors: (i) one species–plot combination (*Madhuca* in plot Q6) had been omitted because the trees in that plot were recorded under a different name for the same taxon; `r if (params$cte == "fresh") "(ii) the C:N ratio of *Calophyllum tetrapterum* had been replaced by the mean of the other species, and is now its measured value;" else "(ii) the C:N ratio of *Calophyllum tetrapterum* had been replaced by the mean of the other species (it is now excluded, as above);"` and (iii) one of the 108 SEMs (with plot type, biological hypothesis i, SLA) had been specified with the wrong direction of the trait–habitat path. Correction (iii) does not affect any reported result.
+
+The main conclusions are unchanged. Biological hypothesis vi, that leaf traits give rise to habitat adaptations which in turn constrain canopy productivity, remains by far the best supported, and the effects of SLA, leaf thickness and PC1 on swamp adaptation are essentially unchanged. `r if (cnWeaker) sprintf("The positive association between leaf C:N ratio and swamp adaptation is weaker than originally reported (%s, compared with %s originally), and the statements about C:N have been qualified accordingly.", coefText(fin, "CNratio", 3), coefText(pub, "CNratio", 3)) else sprintf("The positive association between leaf C:N ratio and swamp adaptation is similar to that originally reported (%s, compared with %s originally).", coefText(fin, "CNratio", 3), coefText(pub, "CNratio", 3))` The total canopy production estimates, the comparison of swamp and non-swamp plots and the phenology analysis (Figs. 2 and 3) did not use leaf traits and are unaffected. The corrections are listed below.
+
+## Abstract {.unnumbered}
+
+- "69 tree species–plot combinations" (l. 14) should read "`r nRows` tree species–plot combinations".
+`r if (cnWeaker) "- The traits listed as associated with more conservative resource acquisition strategies (l. 16–17) should read \"viz., low specific leaf area and thicker leaves, and to a lesser extent a high leaf C:N ratio\"." else ""`
+
+## Methods {.unnumbered}
+
+- At the end of the paragraph on leaf traits (l. 182), the following should be added: "C:N ratios were calculated as the mean of the per-sample C:N ratios of fresh leaves. `r if (params$cte == "fresh") "*Pentace triptera*, for which only senesced leaves were analysed, was" else "*Pentace triptera* and *Calophyllum tetrapterum*, for which no fresh-leaf samples were analysed, were"` excluded from the structural equation models."
+- In the description of the species canopy productivity analysis (l. 214 and 229), "25 tree species" should read "`r nSpecies` tree species", and "a total of 69 species–plot combinations" should read "a total of `r nRows` species–plot combinations".
+- The following should be added after the description of the swamp indicator value (SIV): "SIV was square-root transformed before analysis."
+- "All statistical analyses were performed in R ver. 3.4.0" (l. 282) should read "The structural equation models were fitted in R ver. 4.3.3 (R Core Team 2024) using piecewiseSEM ver. 2.1.2".
+
+## Results {.unnumbered}
+
+Under *Species canopy productivity*, the three paragraphs (l. 310–337) should read as follows.
+
+```{r results-text, include = FALSE}
+viTop <- fin$sems |>
+  filter(BH == "vi", plotType == "noPlot",
+         rank <= 10 | trait == "CNratio", rank > 1) |>
+  arrange(rank)
+viClauses <- map_chr(seq_len(nrow(viTop)), \(i) {
+  tr <- viTop$trait[i]
+  x <- coefRow(fin$modD[[tr]], tr)
+  digits <- if (tr == "CNratio") 3 else 2
+  ind <- coefEst(fin, tr) * coefEst(fin, "SIV")
+  sprintf("%s (%s-ranked model) had a %s effect on SIV (%s) and thus a %s (%s) indirect effect on canopy productivity",
+          traitLab[[tr]], ordinal(viTop$rank[i]),
+          if (x$estimate > 0) "positive" else "negative",
+          coefText(fin, tr, digits),
+          if (ind > 0) "positive" else "negative",
+          f(ind, if (abs(ind) < 0.05) 3 else 2))
+})
+topIndirect <- coefEst(fin, topTrait) * coefEst(fin, "SIV")
+```
+
+> All models considered, the best-supported SEMs again represented biological hypothesis vi, that leaf traits give rise to habitat adaptations which in turn constrain canopy productivity (Fig. 1). In the most parsimonious model (the one ranked first, with ΔAICc = 0), leaf traits were represented by `r traitLab[[topTrait]]`, which had a `r if (coefEst(fin, topTrait) > 0) "positive" else "negative"` effect on SIV (`r coefText(fin, topTrait)`). Swamp adaptation (SIV) in turn had a weak negative effect on canopy productivity (`r coefText(fin, "SIV")`). Thus, `r traitLab[[topTrait]]` had a `r if (topIndirect > 0) "positive" else "negative"` (`r f(coefEst(fin, topTrait))` × `r f(coefEst(fin, "SIV"))` = `r f(topIndirect)`) indirect effect on canopy productivity.
+>
+> Other models of biological hypothesis vi differed only in the leaf trait included: `r paste(viClauses, collapse = "; ")`. Biological hypothesis vi had a summed Akaike weight of `r f(sowOf(fin, "vi"), 1)`%, far greater than that of any competing hypothesis (Fig. 5).
+>
+> The effect of basal area on canopy production was strongly positive, with an estimated effect of `r f(coefRow(fin$modL_siv$noPlot, "logba")$estimate)` (95% CI = [`r f(coefRow(fin$modL_siv$noPlot, "logba")$lwr)`, `r f(coefRow(fin$modL_siv$noPlot, "logba")$upr)`]) in the top-ranked model, and a similar estimate across all models. Models containing plot type as a fixed effect in the canopy production component model were generally poor fits to the data: the highest-ranked such model had a ΔAICc of `r f(firstPlotType$dAICc_tab)` and a weight of only `r f(firstPlotType$weight, 3)` (Table 1).
+
+## Discussion {.unnumbered}
+
+`r if (cnWeaker) "- \"low SLA, high leaf C:N ratio, and thicker leaves\" (l. 368–369) should read \"low SLA and thicker leaves, and to a lesser extent a high leaf C:N ratio\"." else ""`
+- "biological hypotheses vi and i; Fig. 4" (l. 413) should refer to Fig. 5.
+- "the sixth-ranked model; Table 1" (l. 419), referring to the LDMC model of biological hypothesis ii, should read "the `r ordinal(rankOf(fin, "ii", "LDMC"))`-ranked model".
+`r if (cnWeaker) sprintf("- \"leaf thickness and C:N ratio (Luo and others, 2005) had an indirect negative effect\" (l. 397–398) should read \"leaf thickness (Luo and others, 2005) had an indirect negative effect, and C:N ratio a very weak one (%s)\".", f(coefEst(fin, "CNratio") * coefEst(fin, "SIV"), 3)) else ""`
+
+## Figures and tables {.unnumbered}
+
+- The caption of Fig. 3b, "The number of rain days in a month during the same period" (l. 687), should read "Mean daily temperature over the 30 days preceding each collection date".
+- Table 1, Fig. 4 and Fig. 5 are replaced by the corrected versions below. In Fig. 4b the y-axis shows the square root of the swamp indicator value.
+- Tables S1 and S3 in the Supplementary Information are replaced by the corrected versions below.
+
+```{r table1-corrected}
+prettyTerms <- c("loglitter" = "Canopy production", "logba" = "BA",
+                 "iv\\.wet" = "SIV", "plotwet" = "Plot type",
+                 "CNratio" = "C:N")
+canopyFirst <- function(x, isCanopy) c(x[isCanopy], x[!isCanopy])
+table1Layout <- function(sems) {
+  sems |>
+    mutate(
+      parts = str_split(formula, "; "),
+      r2parts = str_split(R2, " / "),
+      isCanopy = map(parts, \(p) str_starts(p, "loglitter")),
+      Models = map2_chr(parts, isCanopy, \(p, c)
+        paste(str_replace_all(canopyFirst(p, c), prettyTerms),
+              collapse = "<br>")),
+      `R² (%)` = map2_chr(r2parts, isCanopy, \(r, c)
+        paste(sprintf("%.2f", as.numeric(canopyFirst(r, c))),
+              collapse = "<br>"))) |>
+    transmute(Rank = rank, Models, `Biological hypothesis` = BH, `R² (%)`,
+              `Fisher's C` = sprintf("%.3f", FisherC),
+              AICc = sprintf("%.2f", AICc),
+              `ΔAICc` = sprintf("%.2f", dAICc_tab),
+              Weight = sprintf("%.3f", weight))
+}
+fin$sems |>
+  filter(rank <= 10 | id == firstPlotType$id) |>
+  table1Layout() |>
+  kable(escape = FALSE,
+        caption = sprintf("**Table 1** (corrected). Top ten models, and the top model containing the term Plot type, of the 108 SEMs fitted to %d species–plot combinations of %d species.", nRows, nSpecies)) |>
+  kable_styling(font_size = 12)
+```
+
+```{r fig4-corrected, fig.width = 7, fig.height = 11, fig.cap = sprintf("**Fig. 4** (corrected). (a) First and second principal components of four leaf traits of %d species (C:N ratio from fresh leaves); (b) square root of the swamp indicator value against SLA.", nrow(fin$traitsOnly))}
+pcaVar <- 100 * summary(fin$pca)$importance[2, ]
+pcaArrows <- as_tibble(fin$pca$rotation, rownames = "trait") |>
+  mutate(trait = recode(trait, CNratio = "C:N"))
+fig4a <- bind_cols(code = fin$traitsOnly$code, as_tibble(fin$pca$x)) |>
+  ggplot(aes(PC1, PC2)) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_vline(xintercept = 0, linetype = 2) +
+  geom_text(aes(label = code)) +
+  geom_segment(data = pcaArrows,
+               aes(x = 0, y = 0, xend = 3 * PC1, yend = 3 * PC2),
+               colour = "forestgreen", linewidth = 1,
+               arrow = arrow(length = unit(0.2, "cm"))) +
+  geom_text(data = pcaArrows, aes(4 * PC1, 3.5 * PC2, label = trait),
+            colour = "forestgreen", size = 5) +
+  labs(x = sprintf("PC 1 (%.1f%% of variance)", pcaVar[["PC1"]]),
+       y = sprintf("PC 2 (%.1f%% of variance)", pcaVar[["PC2"]]),
+       title = "(a)") +
+  theme_bw()
+fig4b <- fin$litter |>
+  distinct(code, SLA, iv.wet) |>
+  ggplot(aes(SLA * 100, iv.wet, label = code)) +
+  geom_text() +
+  labs(x = expression(SLA~(cm^2~g^-1)),
+       y = "Habitat specialization (square root of SIV)",
+       title = "(b)") +
+  theme_bw()
+patchwork::wrap_plots(fig4a, fig4b, ncol = 1)
+```
+
+```{r fig5-corrected, fig.width = 6, fig.height = 4, fig.cap = sprintf("**Fig. 5** (corrected). Summed Akaike weights of the biological hypotheses. The four best supported, as shown with their path diagrams in the original Fig. 5, are now %s.", paste(sprintf("%s (%.1f%%)", sowFin$BH[1:4], 100 * sowFin$SoW[1:4]), collapse = ", "))}
+sowFin |>
+  mutate(BH = fct_reorder(BH, SoW)) |>
+  ggplot(aes(SoW * 100, BH)) +
+  geom_col(fill = "#2166AC") +
+  geom_text(aes(label = sprintf("%.1f%%", SoW * 100)), hjust = -0.1,
+            size = 3.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(x = "Summed Akaike weight (%)", y = "Biological hypothesis") +
+  theme_bw()
+```
+
+```{r table-s1-corrected}
+# Table S1 does not use C:N; only the Madhuca correction changes it
+tableS1 <- function(sp) {
+  sp |>
+    summarise(litter.collection = sum(litter.collection),
+              ten.ba = sum(ten.ba), No.of.plots = n(),
+              .by = c(species, code, duration)) |>
+    mutate(duration = round(duration / 7),
+           litter.production = round(
+             litter.collection / (4 * No.of.plots) / (duration / 52), 1),
+           productivity = round(litter.production / (ten.ba / 10000), 1),
+           litter.collection = round(litter.collection, 1),
+           ten.ba = round(ten.ba, 1)) |>
+    arrange(species)
+}
+tableS1Fin <- tableS1(sppPlot$madhucaFixed)
+s1Changed <- anti_join(tableS1Fin, tableS1(sppPlot$asPublished),
+                       by = names(tableS1Fin))
+tableS1Fin |>
+  mutate(species = if_else(species %in% s1Changed$species,
+                           paste0("**", species, "**"), species)) |>
+  kable(col.names = c("Species", "Code", "Duration (weeks)",
+                      "Litter (g)", "BA (cm²)", "Plots",
+                      "Production (g m⁻² yr⁻¹)",
+                      "Productivity (g m⁻² yr⁻¹ m⁻² BA)"),
+        caption = sprintf("**Table S1** (corrected). Changed row in bold: %s.", paste(s1Changed$species, collapse = ", "))) |>
+  kable_styling(full_width = FALSE, font_size = 12) |>
+  scroll_box(height = "400px")
+```
+
+```{r table-s3-corrected}
+library(MuMIn)
+# Appendix B models, refitted to the corrected data; models without BA
+# ("N" models) are fitted here
+litterFin <- fin$litter
+fitLmerNoBa <- function(fixed) {
+  fm <- reformulate(c(if (is.null(fixed)) "1" else fixed,
+                      "(1 | plot)", "(logba | species)"),
+                    response = "loglitter")
+  eval(bquote(lmer(.(fm), data = .(litterFin))))
+}
+traitsS3 <- c(`1` = "SLA", `2` = "LT", `3` = "LDMC", `4` = "CNratio")
+modsS3 <- c(
+  list(L0 = fin$modL0$noPlot, L0t = fin$modL0$plot),
+  imap(traitsS3, \(t, k)
+    list(fin$modL_trait$noPlot[[t]], fin$modL_trait$plot[[t]]) |>
+      set_names(paste0("L", k), paste0("L", k, "t"))) |>
+    unname() |>
+    list_flatten(),
+  list(L7 = fin$modL_siv$noPlot),
+  set_names(fin$modL_sivTrait$noPlot, paste0("L8.", 1:6, "c")),
+  list(N0 = fitLmerNoBa(NULL), N0t = fitLmerNoBa("plotwet")),
+  imap(traitsS3, \(t, k)
+    list(fitLmerNoBa(t), fitLmerNoBa(c("plotwet", t))) |>
+      set_names(paste0("N", k), paste0("N", k, "t"))) |>
+    unname() |>
+    list_flatten(),
+  list(N7 = fitLmerNoBa("iv.wet")),
+  map(set_names(traitNames, paste0("N8.", 1:6, "c")), \(t)
+    fitLmerNoBa(c("iv.wet", t))))
+modelSelS3 <- model.sel(modsS3)
+tableS3Fin <- tibble(model = rownames(modelSelS3)) |>
+  bind_cols(
+    map(rownames(modelSelS3), \(m) {
+      cm <- coef(summary(modsS3[[m]]))
+      terms <- c("logba", "plotwet", "SLA", "LT", "LDMC", "CNratio",
+                 "iv.wet", "PC1", "PC2")
+      map_chr(set_names(terms), \(j)
+        if (j %in% rownames(cm)) {
+          sprintf("%.2f (±%.2f)", cm[j, "Estimate"], cm[j, "Std. Error"])
+        } else NA_character_) |>
+        as_tibble_row()
+    }) |>
+      list_rbind(),
+    as.data.frame(modelSelS3)[c("df", "logLik", "AICc", "delta",
+                                "weight")] |>
+      mutate(across(everything(), as.numeric)) |>
+      as_tibble()) |>
+  mutate(R2adj = map_dbl(model, \(m) tryCatch(
+    attr(r.squaredLR(modsS3[[m]]), "adj.r.squared"),
+    error = \(e) NA_real_)))
+tableS3Fin |>
+  rename(BA = logba, `Plot type` = plotwet, `C:N` = CNratio,
+         SIV = iv.wet, `adj. R²` = R2adj) |>
+  kable(digits = 3, caption = "**Table S3** (corrected).") |>
+  kable_styling(font_size = 11) |>
+  scroll_box(height = "400px")
+```
+
+## Data availability {.unnumbered}
+
+The species-level data deposited on Figshare (https://figshare.com/articles/dataset/Habitat_adaptation_mediates_the_influence_of_leaf_traits_on_canopy_productivity_evidence_from_a_tropical_freshwater_swamp_forest/15163782) contain the original, mixed C:N ratios. A new version of the dataset will give fresh-leaf C:N ratios, and the C and N content of fresh and senesced leaves separately.
+
+:::
+
+# Afternotes for co-authors {.unnumbered}
+
+These notes are not part of the erratum.
+
+## Afternote 1. How the corrections were applied {#afternote-1}
+
+The corrections were applied one at a time, so that each effect can be seen on its own. Scenario A reproduces the published analysis: all 108 SEMs have the same rank and weight as in `historical_reproduction.Rmd`, with AICc values within `r aMaxDiff` (the third decimal, where `AIC.psem()` rounds).
+
+```{r scenarios-table}
+scenarioOrder <- names(results)
+tribble(
+  ~scenario, ~description,
+  "A", "As published.",
+  "A24", "A without Pentace triptera (PTR), which has no fresh-leaf C:N; isolates the smaller species set.",
+  "B1-ovr", "Fresh-leaf C:N, 24 species, historical CTE override kept; isolates the fresh-leaf values.",
+  "B1", "Fresh-leaf C:N, 24 species, CTE at its measured value, model 55 fixed.",
+  "B2", "B1 plus the Madhuca fix (Q6 row restored). The corrected analysis if CTE's samples were fresh.",
+  "B2-CTE", "B2 with CTE excluded. The corrected analysis if CTE's samples were not fresh."
+) |>
+  left_join(
+    imap(results, \(r, s) tibble(
+      scenario = s,
+      species = n_distinct(r$litter$species),
+      rows = nrow(r$litter),
+      PC1 = 100 * summary(r$pca)$importance[2, "PC1"],
+      PC2 = 100 * summary(r$pca)$importance[2, "PC2"])) |>
+      list_rbind(),
+    by = "scenario") |>
+  kable(digits = 1,
+        col.names = c("Scenario", "Description", "Species",
+                      "Species–plot rows", "PC1 (%)", "PC2 (%)")) |>
+  kable_styling(font_size = 12)
+```
+
+Decisions behind these steps: *Pentace triptera* has no fresh-leaf C:N, so it is dropped from every SEM, because AICc can only compare models fitted to the same data (imputing its C:N is an alternative to consider). As in the original analysis, species C:N is the mean of the per-sample ratios. The square-root transformation of SIV and the inverse-plot-number weights are kept, because they are part of the published model rather than errors.
+
+## Afternote 2. Claim by claim {#afternote-2}
+
+```{r claims}
+coefCi <- function(s, p, digits = 2) {
+  r <- results[[s]]
+  x <- switch(p,
+              SIV = coefRow(r$modL_siv$noPlot, "iv.wet"),
+              BA = coefRow(r$modL_siv$noPlot, "logba"),
+              coefRow(r$modD[[p]], p))
+  sprintf(paste0("%.", digits, "f [%.", digits, "f, %.", digits, "f]"),
+          x$estimate, x$lwr, x$upr)
+}
+indirect <- function(s, p) coefEst(results[[s]], p) * coefEst(results[[s]], "SIV")
+bestPlotType <- function(s) {
+  with(slice_min(filter(results[[s]]$sems, plotType == "plot"), rank),
+       sprintf("rank %d, Δ %.2f, w %.3f", rank, dAICc_tab, weight))
+}
+cols <- c("A", "B2", "B2-CTE")
+tribble(
+  ~claim, ~verdict, ~fn,
+  "Sample: 69 species–plot combinations, 25 species", "changes",
+    \(s) sprintf("%d; %d", nrow(results[[s]]$litter),
+                 n_distinct(results[[s]]$litter$species)),
+  "Hypothesis vi best supported, summed weight 61.3%", "holds",
+    \(s) sprintf("%.1f%%", sowOf(results[[s]], "vi")),
+  "Top-ranked model uses SLA", "changes if CTE is fresh",
+    \(s) with(filter(results[[s]]$sems, rank == 1), trait),
+  "SLA → SIV −0.29 [−0.41, −0.17]", "holds", \(s) coefCi(s, "SLA"),
+  "SIV → canopy −1.67 [−4.37, 1.04] (weak negative)", "holds",
+    \(s) coefCi(s, "SIV"),
+  "SLA indirect effect +0.48", "changes", \(s) f(indirect(s, "SLA")),
+  "PC1 → SIV 0.07 [0.04, 0.11]", "holds", \(s) coefCi(s, "PC1"),
+  "LT → SIV 1.20 [0.44, 1.95]", "holds", \(s) coefCi(s, "LT"),
+  "C:N → SIV 0.009 [0.004, 0.013]", "qualify if CTE is fresh",
+    \(s) coefCi(s, "CNratio", 3),
+  "C:N → SIV R² 18.25%", "qualify if CTE is fresh",
+    \(s) sprintf("%.1f%%", 100 * coefRow(results[[s]]$modD$CNratio,
+                                         "CNratio")$R2),
+  "C:N model of hypothesis vi ranked seventh (text) / eighth (Table 1)",
+    "changes", \(s) as.character(rankOf(results[[s]], "vi", "CNratio")),
+  "BA → canopy 0.93 [0.61, 1.25]", "holds", \(s) coefCi(s, "BA"),
+  "Best plot-type model ΔAICc 11.51, weight 0.001", "holds",
+    bestPlotType
+) |>
+  mutate(values = map(fn, \(g) set_names(map_chr(cols, g), cols))) |>
+  unnest_wider(values) |>
+  select(claim, all_of(cols), verdict) |>
+  kable(col.names = c("Published statement", "Published (A)", "B2",
+                      "B2-CTE", "Verdict")) |>
+  kable_styling(font_size = 12) |>
+  column_spec(1, width = "25em")
+```
+
+## Afternote 3. Species C:N {#afternote-3}
+
+```{r cn-table}
+cnCompare <- results$A$traitsOnly |>
+  select(code) |>
+  left_join(distinct(results$A$litter, code, species), by = "code") |>
+  left_join(cnBySpecies, by = c(species = "Species")) |>
+  mutate(samples = case_when(
+           n_fresh == 0 ~ "senesced only",
+           n_senesced == 0 ~ "fresh only",
+           .default = "fresh + senesced"),
+         difference = CN_fresh - CN_hist) |>
+  arrange(samples, difference)
+cnCompare |>
+  select(species, code, n_fresh, n_senesced, samples, CN_hist, CN_fresh,
+         difference) |>
+  kable(digits = 2,
+        col.names = c("Species", "Code", "Fresh samples",
+                      "Senesced samples", "Samples used originally",
+                      "C:N, published", "C:N, fresh only", "Difference")) |>
+  kable_styling(font_size = 12) |>
+  scroll_box(height = "350px")
+```
+
+```{r fig-cn, fig.width = 6, fig.height = 5, fig.cap = "Species C:N used in the published analysis against fresh-leaf C:N (1:1 line dashed). PTR has no fresh-leaf value."}
+cnCompare |>
+  filter(!is.na(CN_fresh)) |>
+  ggplot(aes(CN_fresh, CN_hist, colour = samples, label = code)) +
+  geom_abline(linetype = 2) +
+  geom_text(size = 3.5) +
+  scale_colour_manual(values = c("fresh + senesced" = "#B2182B",
+                                 "fresh only" = "grey40")) +
+  labs(x = "C:N, fresh leaves only", y = "C:N, as published",
+       colour = "Samples used\noriginally") +
+  coord_equal() +
+  theme_bw()
+```
+
+## Afternote 4. Step by step {#afternote-4}
+
+```{r paths}
+paths <- imap(results, \(r, s) bind_rows(
+  map(set_names(traitNames), \(t) coefRow(r$modD[[t]], t)) |>
+    list_rbind(names_to = "trait") |>
+    mutate(path = paste(trait, "-> SIV")),
+  coefRow(r$modS$LDMC, "iv.wet") |> mutate(path = "SIV -> LDMC"),
+  coefRow(r$modL_siv$noPlot, "iv.wet") |> mutate(path = "SIV -> canopy"),
+  coefRow(r$modL_siv$noPlot, "logba") |> mutate(path = "BA -> canopy")) |>
+  mutate(scenario = s)) |>
+  list_rbind() |>
+  select(-trait)
+paths |>
+  mutate(value = sprintf("%.3f [%.3f, %.3f]%s", estimate, lwr, upr,
+                         if_else(is.na(R2), "",
+                                 sprintf("; R² %.1f%%", 100 * R2)))) |>
+  select(path, scenario, value) |>
+  pivot_wider(names_from = scenario, values_from = value) |>
+  kable(caption = "Path coefficients [95% Wald CI] by scenario.") |>
+  kable_styling(font_size = 11)
+```
+
+```{r fig-cn-siv, fig.width = 8, fig.height = 4.5, fig.cap = "C:N → SIV and PC1 → SIV coefficients (95% CI) by scenario."}
+paths |>
+  filter(path %in% c("CNratio -> SIV", "PC1 -> SIV")) |>
+  mutate(scenario = factor(scenario, levels = scenarioOrder)) |>
+  ggplot(aes(scenario, estimate, ymin = lwr, ymax = upr)) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_pointrange() +
+  facet_wrap(~ path, scales = "free_y") +
+  labs(x = "Scenario", y = "Coefficient (95% CI)") +
+  theme_bw()
+```
 
 ```{r pca-loadings}
 imap(results, \(r, s)
@@ -439,73 +790,21 @@ imap(results, \(r, s)
   kable_styling(font_size = 12)
 ```
 
-## Trait–SIV and canopy-production paths
-
-The published Results quote these path coefficients (95% Wald CIs, estimate ± 1.96 SE, as in the paper).
-
-```{r component-paths}
-coefRow <- function(mod, term) {
-  cf <- coef(summary(mod))[term, ]
-  est <- cf[["Estimate"]]
-  se <- cf[["Std. Error"]]
-  tibble(estimate = est, lwr = est - 1.96 * se, upr = est + 1.96 * se,
-         R2 = if (inherits(mod, "lm")) summary(mod)$r.squared else NA)
-}
-paths <- imap(results, \(r, s) bind_rows(
-  map(set_names(traitNames), \(t) coefRow(r$modD[[t]], t)) |>
-    list_rbind(names_to = "trait") |>
-    mutate(path = paste(trait, "-> SIV")),
-  coefRow(r$modS$LDMC, "iv.wet") |> mutate(path = "SIV -> LDMC"),
-  coefRow(r$modL_siv$noPlot, "iv.wet") |> mutate(path = "SIV -> canopy"),
-  coefRow(r$modL_siv$noPlot, "logba") |> mutate(path = "BA -> canopy")) |>
-  mutate(scenario = s)) |>
-  list_rbind() |>
-  select(-trait)
-
-paths |>
-  mutate(value = sprintf("%.3f [%.3f, %.3f]%s", estimate, lwr, upr,
-                         if_else(is.na(R2), "",
-                                 sprintf("; R² %.1f%%", 100 * R2)))) |>
-  select(path, scenario, value) |>
-  pivot_wider(names_from = scenario, values_from = value) |>
-  kable(caption = "Path coefficients [95% CI] by scenario.") |>
-  kable_styling(font_size = 11)
-```
-
-```{r fig-cn-siv, fig.width = 8, fig.height = 4.5, fig.cap = "C:N → SIV coefficient (95% CI) by scenario. The published value is 0.009 [0.004, 0.013]."}
-paths |>
-  filter(path %in% c("CNratio -> SIV", "PC1 -> SIV")) |>
-  mutate(scenario = factor(scenario, levels = scenarioOrder)) |>
-  ggplot(aes(scenario, estimate, ymin = lwr, ymax = upr)) +
-  geom_hline(yintercept = 0, linetype = 2) +
-  geom_pointrange() +
-  facet_wrap(~ path, scales = "free_y") +
-  labs(x = "Scenario", y = "Coefficient (95% CI)") +
-  theme_bw()
-```
-
-## Model selection
-
 ```{r top-models}
-topModels <- imap(results, \(r, s)
+imap(results, \(r, s)
   r$sems |>
     filter(rank <= 10) |>
-    transmute(scenario = s, rank, id, BH, trait, plotType,
-              AICc = round(AICc, 2), dAICc = dAICc_tab, weight)) |>
-  list_rbind()
-
-topModels |>
-  mutate(model = sprintf("%s %s%s (%.3f)", BH, trait,
-                         if_else(plotType == "plot", " +plot", ""),
-                         weight)) |>
-  select(rank, scenario, model) |>
+    transmute(scenario = s, rank,
+              model = sprintf("%s %s%s (%.3f)", BH, trait,
+                              if_else(plotType == "plot", " +plot", ""),
+                              weight))) |>
+  list_rbind() |>
   pivot_wider(names_from = scenario, values_from = model) |>
   kable(caption = "Top ten SEMs by scenario: hypothesis, trait (Akaike weight).") |>
   kable_styling(font_size = 11)
 ```
 
 ```{r published-top-ranks}
-# Where do the published top ten models rank in each scenario?
 publishedTop <- results$A$sems |>
   filter(rank <= 10) |>
   select(id, BH, trait, plotType, rank_A = rank)
@@ -528,23 +827,6 @@ sowAll |>
   kable_styling(full_width = FALSE)
 ```
 
-```{r fig-sow, fig.width = 8, fig.height = 5, fig.cap = "Summed Akaike weights per biological hypothesis, by scenario (Fig. 5 of the paper is scenario A)."}
-sowAll |>
-  mutate(scenario = factor(scenario, levels = scenarioOrder),
-         BH = fct_reorder(BH, SoW, .fun = max)) |>
-  ggplot(aes(100 * SoW, BH, fill = scenario)) +
-  geom_col(position = position_dodge(0.85), width = 0.8) +
-  scale_fill_manual(values = c("grey70", "grey45", "#D1E5F0", "#67A9CF",
-                               "#2166AC", "#B2182B")) +
-  labs(x = "Summed Akaike weight (%)", y = "Biological hypothesis",
-       fill = "Scenario") +
-  theme_bw()
-```
-
-## The C:N models specifically
-
-The Abstract and Discussion state that a high leaf C:N ratio is associated with adaptation to the swamp. The SEMs that carry this are the C:N models of each hypothesis:
-
 ```{r cn-models}
 imap(results, \(r, s)
   r$sems |>
@@ -557,9 +839,17 @@ imap(results, \(r, s)
   kable_styling(full_width = FALSE)
 ```
 
-## The influence of CTE
+## Afternote 5. Why CTE matters {#afternote-5}
 
-```{r fig-cte, fig.width = 9, fig.height = 4.5, fig.cap = "SIV (square-rooted) against species C:N, as published (A) and with fresh-leaf C:N (B2). CTE is in red; in A it enters the models with the overridden value. Lines are unweighted least-squares fits, for orientation only."}
+```{r cte-values, include = FALSE}
+sivRank <- results$A$litter |>
+  distinct(code, iv.wet) |>
+  mutate(r = rank(-iv.wet))
+```
+
+*Calophyllum tetrapterum* (CTE) is weakly associated with the swamp: its swamp indicator value ranks `r sivRank$r[sivRank$code == "CTE"]` of `r nrow(sivRank)`, and it contributes `r sum(results$A$litter$code == "CTE")` species–plot row. Its two CHNS samples are filed with the fresh leaves, but their nitrogen content (0.96–1.01%) is below that of every other fresh sample (1.19–3.78%) and within the range of the senesced samples, and they were entered separately from the rest of the fresh block. The original analysis gave CTE the mean C:N of the other species in the models ("assign CTE the mean value for now"), which neutralised it. Taken at face value, CTE combines one of the highest C:N ratios (`r f(cnBySpecies$CN_fresh[cnBySpecies$Species == cteName])`) with a low SIV, which flattens the C:N–SIV slope: C:N → SIV is `r coefCi("B2", "CNratio", 3)` with CTE (B2) and `r coefCi("B2-CTE", "CNratio", 3)` without it (B2-CTE). With the historical override and fresh-leaf values for the other species (B1-ovr), it is `r coefCi("B1-ovr", "CNratio", 3)`. The strength of the C:N result therefore depends on CTE rather than on the mixing of fresh and senesced leaves as such.
+
+```{r fig-cte, fig.width = 9, fig.height = 4.5, fig.cap = "Square-rooted SIV against the species C:N used in the models, as published (A) and with fresh-leaf C:N (B2); CTE in red. Lines are unweighted least-squares fits, for orientation only."}
 bind_rows(
   results$A$litter |> distinct(code, CNratio, iv.wet) |> mutate(scenario = "A"),
   results$B2$litter |> distinct(code, CNratio, iv.wet) |>
@@ -573,79 +863,35 @@ bind_rows(
   theme_bw()
 ```
 
-# Findings
+**Question for WN and PJ:** were the two *C. tetrapterum* CHNS samples fresh or senesced leaves, and were they run in a later batch than the other fresh samples? If fresh, this document is knitted with `cte = "fresh"`; if not, with `cte = "excluded"`.
 
-```{r findings-helpers}
-pathText <- function(s, p) {
-  x <- filter(paths, scenario == s, path == p)
-  sprintf("%.3f [%.3f, %.3f], R² %.1f%%", x$estimate, x$lwr, x$upr,
-          100 * x$R2)
-}
-sowText <- function(s, h) {
-  sprintf("%.1f%%", 100 * sowAll$SoW[sowAll$scenario == s & sowAll$BH == h])
-}
-topText <- function(s) {
-  x <- filter(results[[s]]$sems, rank == 1)
-  sprintf("BH %s with %s (weight %.3f)", x$BH, x$trait, x$weight)
-}
-rankCn <- function(s) {
-  with(results[[s]]$sems, rank[BH == "vi" & trait == "CNratio" &
-                                 plotType == "noPlot"])
-}
+## Afternote 6. What kind of correction {#afternote-6}
+
+```{r options}
+tribble(
+  ~Option, ~What, ~Assessment,
+  "1. Provenance note only", "A note in the repository and a new Figshare version; nothing in the journal.", "Insufficient: the Methods misdescribe the data, and published numbers (Table 1, Figs 4 and 5, coefficients, sample size) are wrong in the version of record.",
+  "2. Published correction", "This erratum, plus a new Figshare version.", "Proportionate: the errors change reported results but not the main conclusions.",
+  "3. Retraction or replacement", "Withdraw or substantially republish.", "Not warranted: hypothesis vi and the SLA, LT and PC1 effects are robust to the correction."
+) |>
+  kable() |>
+  kable_styling(full_width = FALSE) |>
+  column_spec(3, width = "30em")
 ```
 
-- **C:N → SIV.** Published (A): `r pathText("A", "CNratio -> SIV")`. Dropping PTR alone (A24) strengthens it: `r pathText("A24", "CNratio -> SIV")`. With fresh-leaf C:N and the historical CTE override (B1-ovr): `r pathText("B1-ovr", "CNratio -> SIV")`. With fresh-leaf C:N and CTE's own value (B1): `r pathText("B1", "CNratio -> SIV")`; after the *Madhuca* fix (B2): `r pathText("B2", "CNratio -> SIV")`. Without CTE (B2-CTE): `r pathText("B2-CTE", "CNratio -> SIV")`. The strength of the C:N–habitat association therefore depends mainly on how CTE is treated, not on the fresh/senesced mixing as such.
-- **The C:N chain model (BH vi, C:N → SIV → canopy)** ranks `r rankCn("A")` in A, `r rankCn("B1-ovr")` in B1-ovr, `r rankCn("B2")` in B2 and `r rankCn("B2-CTE")` in B2-CTE.
-- **Top model.** A: `r topText("A")`; B2: `r topText("B2")`; B2-CTE: `r topText("B2-CTE")`.
-- **Summed weights.** BH vi (traits → SIV → canopy) has `r sowText("A", "vi")` in A and `r sowText("B2", "vi")` in B2; BH i has `r sowText("A", "i")` and `r sowText("B2", "i")`; BH vii has `r sowText("A", "vii")` and `r sowText("B2", "vii")`. BH vi remains the best-supported hypothesis in every scenario.
-- **Other paths.** SLA → SIV (`r pathText("B2", "SLA -> SIV")` in B2) and PC1 → SIV (`r pathText("B2", "PC1 -> SIV")`) hardly change; SIV → canopy remains non-significant (B2: `r with(filter(paths, scenario == "B2", path == "SIV -> canopy"), sprintf("%.2f [%.2f, %.2f]", estimate, lwr, upr))`).
+Under COPE guidance, a correction is the usual route when an honest error affects reported results without invalidating the conclusions; the decision rests with the authors and the journal's editor.
 
-# The corrected analysis (B2)
+## Afternote 7. Points for the authors to check {#afternote-7}
 
-```{r b2-table1}
-results$B2$sems |>
-  filter(rank <= 10) |>
-  select(rank, BH, formula, R2, FisherC, AICc, dAICc = dAICc_tab, weight) |>
-  kable(digits = 3,
-        caption = "Table 1, corrected (B2): the ten top-ranked SEMs.") |>
-  kable_styling(font_size = 12)
-```
-
-```{r fig4-b2, fig.width = 7, fig.height = 11, fig.cap = "Figure 4, corrected (B2): a) PCA of leaf traits with fresh-leaf C:N (24 species); b) SIV (square-rooted) against SLA."}
-r <- results$B2
-pcaVar <- 100 * summary(r$pca)$importance[2, ]
-pcaArrows <- as_tibble(r$pca$rotation, rownames = "trait") |>
-  mutate(trait = recode(trait, CNratio = "C:N"))
-fig4a <- bind_cols(code = r$traitsOnly$code, as_tibble(r$pca$x)) |>
-  ggplot(aes(PC1, PC2)) +
-  geom_hline(yintercept = 0, linetype = 2) +
-  geom_vline(xintercept = 0, linetype = 2) +
-  geom_text(aes(label = code)) +
-  geom_segment(data = pcaArrows,
-               aes(x = 0, y = 0, xend = 3 * PC1, yend = 3 * PC2),
-               colour = "forestgreen", linewidth = 1,
-               arrow = arrow(length = unit(0.2, "cm"))) +
-  geom_text(data = pcaArrows, aes(4 * PC1, 3.5 * PC2, label = trait),
-            colour = "forestgreen", size = 5) +
-  labs(x = sprintf("PC 1 (%.1f%% of variance)", pcaVar[["PC1"]]),
-       y = sprintf("PC 2 (%.1f%% of variance)", pcaVar[["PC2"]]),
-       title = "a)") +
-  theme_bw()
-fig4b <- r$litter |>
-  distinct(code, SLA, iv.wet) |>
-  ggplot(aes(SLA * 100, iv.wet, label = code)) +
-  geom_text() +
-  labs(x = expression(SLA~(cm^2~g^-1)),
-       y = "Habitat specialisation (sqrt of swamp indicator value)",
-       title = "b)") +
-  theme_bw()
-patchwork::wrap_plots(fig4a, fig4b, ncol = 1)
-```
-
-# Outputs
+- The author list in the erratum heading is taken from the accepted manuscript; check it against the published version.
+- The Introduction refers to "biological hypotheses viii–x" (l. 108), but there are nine hypotheses; the intended range should be confirmed before it is added to the erratum.
+- The R version used originally is unknown: the paper gives 3.4.0, which cannot run piecewiseSEM 2.1.2. The erratum gives the version used for the corrected analysis.
+- The SIV of *Madhuca* is the SSI file's "Madhuca sp." value. Whether it pools all *Madhuca* trees in the 40 plots could not be checked, because those data are not in this repository.
+- Fisher's C is computed here with `fisherC(dSep())` for every model, which can differ from `summary()` in the third decimal.
+- The *Madhuca* fix has almost no effect on any result (compare B1 and B2).
 
 ```{r outputs}
-# Written for the comparison and write-up (Stage 4)
+# Written for the record and for the erratum's supplementary files
 for (s in names(results)) {
   stem <- paste0("reference/corrected_", s)
   write_csv(select(results[[s]]$sems, -sem), paste0(stem, "_sem_table.csv"))
@@ -658,11 +904,9 @@ write_csv(
     bind_cols(scenario = s, r$traitsOnly, as_tibble(r$pca$x))) |>
     list_rbind(),
   "reference/corrected_species_traits_pca.csv")
+write_csv(tableS1Fin, "reference/corrected_tableS1.csv")
+write_csv(tableS3Fin, "reference/corrected_tableS3.csv")
 ```
-
-The outputs are in `reference/` with the prefix `corrected_`, one SEM table per scenario plus the paths, summed weights, species C:N and species PCA scores.
-
-# Session information
 
 ```{r session-info}
 sessionInfo()
