@@ -4,3 +4,5 @@
 .Ruserdata
 AGENTS.md
 .Rlib/
+*_cache/
+*_files/

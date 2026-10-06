@@ -1,0 +1,109 @@
+id,plotType,BH,trait,AICc,dAICc,RL,weight_sow,rank,dAICc_tab,weight,R2,FisherC,formula
+13,noPlot,vi,SLA,27.507,0,1,0.198,1,0,0.198,27.18 / 34.88,0.58,iv.wet ~ SLA; loglitter ~ logba + iv.wet
+17,noPlot,vi,PC1,27.99,0.482999999999997,0.78545,0.155,2,0.48,0.156,27.67 / 34.88,0.977,iv.wet ~ PC1; loglitter ~ logba + iv.wet
+21,noPlot,vii,LDMC,29.115,1.607999999999997,0.44754,0.089,3,1.61,0.088,1.34 / 33.4,1.9,LDMC ~ iv.wet; loglitter ~ logba + LDMC
+24,noPlot,vii,PC2,29.431,1.9239999999999995,0.38213,0.076,4,1.92,0.076,0.55 / 33.27,2.16,PC2 ~ iv.wet; loglitter ~ logba + PC2
+16,noPlot,vi,CNratio,29.474,1.9669999999999987,0.374,0.074,5,1.97,0.074,16.99 / 34.88,2.195,iv.wet ~ CNratio; loglitter ~ logba + iv.wet
+14,noPlot,vi,LT,30.235,2.727999999999998,0.25564,0.051,6,2.73,0.051,11.05 / 34.88,2.82,iv.wet ~ LT; loglitter ~ logba + iv.wet
+1,noPlot,i,SLA,30.295,2.7880000000000003,0.24808,0.049,7,2.79,0.049,34.19 / 27.18,0.417,loglitter ~ logba + iv.wet + SLA; iv.wet ~ SLA
+9,noPlot,ii,LDMC,30.7,3.192999999999998,0.2026,0.04,8,3.19,0.04,34.63 / 1.34,0.743,loglitter ~ logba + iv.wet + LDMC; LDMC ~ iv.wet
+5,noPlot,i,PC1,30.724,3.2169999999999987,0.20019,0.04,9,3.22,0.04,34.19 / 27.67,0.763,loglitter ~ logba + iv.wet + PC1; iv.wet ~ PC1
+12,noPlot,ii,PC2,30.825,3.317999999999998,0.19033,0.038,10,3.32,0.038,34.71 / 0.55,0.844,loglitter ~ logba + iv.wet + PC2; PC2 ~ iv.wet
+36,noPlot,iv,PC2,31.435,3.9279999999999973,0.1403,0.028,11,3.93,0.028,34.88 / 0 / 0,1.336,loglitter ~ logba + iv.wet; iv.wet ~ 1; PC2 ~ 1
+4,noPlot,i,CNratio,31.465,3.9579999999999984,0.13821,0.027,12,3.96,0.027,34.55 / 16.99,1.36,loglitter ~ logba + iv.wet + CNratio; iv.wet ~ CNratio
+2,noPlot,i,LT,32.567,5.059999999999999,0.07966,0.016,13,5.06,0.016,35.44 / 11.05,2.248,loglitter ~ logba + iv.wet + LT; iv.wet ~ LT
+48,noPlot,ix,PC2,32.583,5.075999999999997,0.07902,0.016,14,5.08,0.016,0.55 / 0 / 33.48,2.261,PC2 ~ iv.wet; iv.wet ~ 1; loglitter ~ logba
+45,noPlot,ix,LDMC,32.835,5.327999999999999,0.06967,0.014,15,5.33,0.014,1.34 / 0 / 33.48,2.464,LDMC ~ iv.wet; iv.wet ~ 1; loglitter ~ logba
+54,noPlot,v,PC2,32.892,5.385000000000002,0.06771,0.013,16,5.39,0.013,33.27 / 0 / 0,2.51,loglitter ~ logba + PC2; PC2 ~ 1; iv.wet ~ 1
+33,noPlot,iv,LDMC,32.928,5.420999999999996,0.0665,0.013,17,5.42,0.013,34.88 / 0 / 0,2.539,loglitter ~ logba + iv.wet; iv.wet ~ 1; LDMC ~ 1
+18,noPlot,vi,PC2,33.428,5.920999999999996,0.05179,0.01,18,5.92,0.01,0.55 / 34.88,5.441,iv.wet ~ PC2; loglitter ~ logba + iv.wet
+15,noPlot,vi,LDMC,33.684,6.176999999999996,0.04557,0.009,19,6.18,0.009,1.34 / 34.88,5.651,iv.wet ~ LDMC; loglitter ~ logba + iv.wet
+51,noPlot,v,LDMC,33.814,6.306999999999999,0.0427,0.008,20,6.31,0.008,33.4 / 0 / 0,3.253,loglitter ~ logba + LDMC; LDMC ~ 1; iv.wet ~ 1
+30,noPlot,iii,PC2,34.376,6.868999999999996,0.03224,0.006,21,6.87,0.006,34.71 / 0 / 0,1.193,loglitter ~ logba + iv.wet + PC2; PC2 ~ 1; iv.wet ~ 1
+90,plot,iv,PC2,34.702,7.194999999999997,0.02739,0.005,22,7.19,0.005,34.13 / 0 / 0,1.451,loglitter ~ logba + iv.wet + plotwet; iv.wet ~ 1; PC2 ~ 1
+108,plot,v,PC2,35.133,7.626000000000001,0.02208,0.004,23,7.63,0.004,33.55 / 0 / 0,1.792,loglitter ~ logba + PC2 + plotwet; PC2 ~ 1; iv.wet ~ 1
+27,noPlot,iii,LDMC,35.518,8.011,0.01822,0.004,24,8.01,0.004,34.63 / 0 / 0,2.096,loglitter ~ logba + iv.wet + LDMC; LDMC ~ 1; iv.wet ~ 1
+87,plot,iv,LDMC,35.959,8.452000000000002,0.01461,0.003,25,8.45,0.003,34.13 / 0 / 0,2.445,loglitter ~ logba + iv.wet + plotwet; iv.wet ~ 1; LDMC ~ 1
+105,plot,v,LDMC,36.227,8.719999999999995,0.01278,0.003,26,8.72,0.003,33.47 / 0 / 0,2.657,loglitter ~ logba + LDMC + plotwet; LDMC ~ 1; iv.wet ~ 1
+3,noPlot,i,LDMC,36.241,8.733999999999998,0.01269,0.003,27,8.73,0.003,34.63 / 1.34,5.209,loglitter ~ logba + iv.wet + LDMC; iv.wet ~ LDMC
+6,noPlot,i,PC2,36.351,8.843999999999998,0.01201,0.002,28,8.84,0.002,34.71 / 0.55,5.298,loglitter ~ logba + iv.wet + PC2; iv.wet ~ PC2
+84,plot,iii,PC2,37.614,10.106999999999996,0.00639,0.001,29,10.11,0.001,34.04 / 0 / 0,1.193,loglitter ~ logba + iv.wet + PC2 + plotwet; PC2 ~ 1; iv.wet ~ 1
+75,plot,vii,LDMC,38.168,10.660999999999998,0.00484,0.001,30,10.66,0.001,1.34 / 33.47,6.762,LDMC ~ iv.wet; loglitter ~ logba + LDMC + plotwet
+37,noPlot,viii,SLA,38.385,10.877999999999997,0.00434,0.001,31,10.88,0.001,27.18 / 0 / 33.48,6.937,iv.wet ~ SLA; SLA ~ 1; loglitter ~ logba
+81,plot,iii,LDMC,38.778,11.270999999999997,0.00357,0.001,32,11.27,0.001,33.94 / 0 / 0,2.096,loglitter ~ logba + iv.wet + LDMC + plotwet; LDMC ~ 1; iv.wet ~ 1
+20,noPlot,vii,LT,39.511,12.004000000000001,0.00247,0,33,12,0,11.05 / 33.42,10.434,LT ~ iv.wet; loglitter ~ logba + LT
+41,noPlot,viii,PC1,39.637,12.129999999999999,0.00232,0,34,12.13,0,27.67 / 0 / 33.48,7.946,iv.wet ~ PC1; PC1 ~ 1; loglitter ~ logba
+22,noPlot,vii,CNratio,39.899,12.392,0.00204,0,35,12.39,0,16.99 / 33.53,10.753,CNratio ~ iv.wet; loglitter ~ logba + CNratio
+63,plot,ii,LDMC,40.709,13.202000000000002,0.00136,0,36,13.2,0,33.94 / 1.34,6.203,loglitter ~ logba + iv.wet + LDMC + plotwet; LDMC ~ iv.wet
+8,noPlot,ii,LT,40.886,13.379000000000001,0.00124,0,37,13.38,0,35.44 / 11.05,8.953,loglitter ~ logba + iv.wet + LT; LT ~ iv.wet
+40,noPlot,viii,CNratio,41.002,13.495000000000001,0.00117,0,38,13.5,0,16.99 / 0 / 33.48,9.046,iv.wet ~ CNratio; CNratio ~ 1; loglitter ~ logba
+78,plot,vii,PC2,41.389,13.882000000000001,9.7e-4,0,39,13.88,0,0.55 / 33.55,9.358,PC2 ~ iv.wet; loglitter ~ logba + PC2 + plotwet
+10,noPlot,ii,CNratio,41.912,14.404999999999998,7.4e-4,0,40,14.4,0,34.55 / 16.99,9.78,loglitter ~ logba + iv.wet + CNratio; CNratio ~ iv.wet
+38,noPlot,viii,LT,42.499,14.992,5.6e-4,0,41,14.99,0,11.05 / 0 / 33.48,10.253,iv.wet ~ LT; LT ~ 1; loglitter ~ logba
+99,plot,ix,LDMC,42.512,15.004999999999999,5.5e-4,0,42,15,0,1.34 / 0 / 33.68,7.629,LDMC ~ iv.wet; iv.wet ~ 1; loglitter ~ logba + plotwet
+76,plot,vii,CNratio,42.85,15.343,4.7e-4,0,43,15.34,0,16.99 / 33.71,10.536,CNratio ~ iv.wet; loglitter ~ logba + CNratio + plotwet
+32,noPlot,iv,LT,43.186,15.678999999999998,3.9e-4,0,44,15.68,0,34.88 / 0 / 0,10.807,loglitter ~ logba + iv.wet; iv.wet ~ 1; LT ~ 1
+46,noPlot,ix,CNratio,43.478,15.971,3.4e-4,0,45,15.97,0,16.99 / 0 / 33.48,11.042,CNratio ~ iv.wet; iv.wet ~ 1; loglitter ~ logba
+66,plot,ii,PC2,43.941,16.434,2.7e-4,0,46,16.43,0,34.04 / 0.55,8.759,loglitter ~ logba + iv.wet + PC2 + plotwet; PC2 ~ iv.wet
+44,noPlot,ix,LT,44.119,16.612,2.5e-4,0,47,16.61,0,11.05 / 0 / 33.48,11.559,LT ~ iv.wet; iv.wet ~ 1; loglitter ~ logba
+50,noPlot,v,LT,44.314,16.807,2.2e-4,0,48,16.81,0,33.42 / 0 / 0,11.716,loglitter ~ logba + LT; LT ~ 1; iv.wet ~ 1
+102,plot,ix,PC2,44.937,17.429999999999996,1.6e-4,0,49,17.43,0,0.55 / 0 / 33.68,9.547,PC2 ~ iv.wet; iv.wet ~ 1; loglitter ~ logba + plotwet
+42,noPlot,viii,PC2,45.467,17.959999999999997,1.3e-4,0,50,17.96,0,0.55 / 0 / 33.48,12.645,iv.wet ~ PC2; PC2 ~ 1; loglitter ~ logba
+64,plot,ii,CNratio,45.795,18.288,1.1e-4,0,51,18.29,0,33.8 / 16.99,10.226,loglitter ~ logba + iv.wet + CNratio + plotwet; CNratio ~ iv.wet
+26,noPlot,iii,LT,45.807,18.3,1.1e-4,0,52,18.3,0,35.44 / 0 / 0,10.235,loglitter ~ logba + iv.wet + LT; LT ~ 1; iv.wet ~ 1
+39,noPlot,viii,LDMC,45.864,18.356999999999996,1e-4,0,53,18.36,0,1.34 / 0 / 33.48,12.965,iv.wet ~ LDMC; LDMC ~ 1; loglitter ~ logba
+100,plot,ix,CNratio,46.593,19.086000000000002,7e-5,0,54,19.09,0,16.99 / 0 / 33.68,10.857,CNratio ~ iv.wet; iv.wet ~ 1; loglitter ~ logba + plotwet
+104,plot,v,LT,46.646,19.139,7e-5,0,55,19.14,0,34.18 / 0 / 0,10.899,loglitter ~ logba + LT + plotwet; LT ~ 1; iv.wet ~ 1
+86,plot,iv,LT,46.776,19.269000000000002,7e-5,0,56,19.27,0,34.13 / 0 / 0,11.002,loglitter ~ logba + iv.wet + plotwet; iv.wet ~ 1; LT ~ 1
+19,noPlot,vii,SLA,48.063,20.556,3e-5,0,57,20.56,0,27.18 / 32.83,17.455,SLA ~ iv.wet; loglitter ~ logba + SLA
+80,plot,iii,LT,49.264,21.757,2e-5,0,58,21.76,0,34.86 / 0 / 0,10.235,loglitter ~ logba + iv.wet + LT + plotwet; LT ~ 1; iv.wet ~ 1
+34,noPlot,iv,CNratio,49.539,22.032,2e-5,0,59,22.03,0,34.88 / 0 / 0,15.927,loglitter ~ logba + iv.wet; iv.wet ~ 1; CNratio ~ 1
+52,noPlot,v,CNratio,49.709,22.202,2e-5,0,60,22.2,0,33.53 / 0 / 0,16.064,loglitter ~ logba + CNratio; CNratio ~ 1; iv.wet ~ 1
+7,noPlot,ii,SLA,50.234,22.727,1e-5,0,61,22.73,0,34.19 / 27.18,16.487,loglitter ~ logba + iv.wet + SLA; SLA ~ iv.wet
+23,noPlot,vii,PC1,50.826,23.319,1e-5,0,62,23.32,0,27.67 / 32.85,19.723,PC1 ~ iv.wet; loglitter ~ logba + PC1
+43,noPlot,ix,SLA,51.797,24.289999999999996,1e-5,0,63,24.29,0,27.18 / 0 / 33.48,17.747,SLA ~ iv.wet; iv.wet ~ 1; loglitter ~ logba
+28,noPlot,iii,CNratio,51.946,24.438999999999997,0,0,64,24.44,0,34.55 / 0 / 0,15.092,loglitter ~ logba + iv.wet + CNratio; CNratio ~ 1; iv.wet ~ 1
+106,plot,v,CNratio,52.336,24.828999999999997,0,0,65,24.83,0,33.71 / 0 / 0,15.4,loglitter ~ logba + CNratio + plotwet; CNratio ~ 1; iv.wet ~ 1
+73,plot,vii,SLA,52.635,25.127999999999997,0,0,66,25.13,0,27.18 / 33.17,18.422,SLA ~ iv.wet; loglitter ~ logba + SLA + plotwet
+88,plot,iv,CNratio,53.069,25.562,0,0,67,25.56,0,34.13 / 0 / 0,15.98,loglitter ~ logba + iv.wet + plotwet; iv.wet ~ 1; CNratio ~ 1
+11,noPlot,ii,PC1,53.073,25.566,0,0,68,25.57,0,34.19 / 27.67,18.775,loglitter ~ logba + iv.wet + PC1; PC1 ~ iv.wet
+74,plot,vii,LT,54.028,26.520999999999997,0,0,69,26.52,0,11.05 / 34.18,19.545,LT ~ iv.wet; loglitter ~ logba + LT + plotwet
+47,noPlot,ix,PC1,55.218,27.711000000000002,0,0,70,27.71,0,27.67 / 0 / 33.48,20.504,PC1 ~ iv.wet; iv.wet ~ 1; loglitter ~ logba
+82,plot,iii,CNratio,55.522,28.014999999999997,0,0,71,28.01,0,33.8 / 0 / 0,15.092,loglitter ~ logba + iv.wet + CNratio + plotwet; CNratio ~ 1; iv.wet ~ 1
+61,plot,ii,SLA,55.625,28.118,0,0,72,28.12,0,33.55 / 27.18,18.002,loglitter ~ logba + iv.wet + SLA + plotwet; SLA ~ iv.wet
+97,plot,ix,SLA,56.361,28.853999999999996,0,0,73,28.85,0,27.18 / 0 / 33.68,18.584,SLA ~ iv.wet; iv.wet ~ 1; loglitter ~ logba + plotwet
+62,plot,ii,LT,56.736,29.228999999999996,0,0,74,29.23,0,34.86 / 11.05,18.881,loglitter ~ logba + iv.wet + LT + plotwet; LT ~ iv.wet
+77,plot,vii,PC1,57.258,29.751,0,0,75,29.75,0,27.67 / 33.16,22.148,PC1 ~ iv.wet; loglitter ~ logba + PC1 + plotwet
+98,plot,ix,LT,58.371,30.864,0,0,76,30.86,0,11.05 / 0 / 33.68,20.174,LT ~ iv.wet; iv.wet ~ 1; loglitter ~ logba + plotwet
+31,noPlot,iv,SLA,59.78,32.272999999999996,0,0,77,32.27,0,34.88 / 0 / 0,24.181,loglitter ~ logba + iv.wet; iv.wet ~ 1; SLA ~ 1
+65,plot,ii,PC1,60.325,32.818,0,0,78,32.82,0,33.56 / 27.67,21.72,loglitter ~ logba + iv.wet + PC1 + plotwet; PC1 ~ iv.wet
+35,noPlot,iv,PC1,60.414,32.907,0,0,79,32.91,0,34.88 / 0 / 0,24.692,loglitter ~ logba + iv.wet; iv.wet ~ 1; PC1 ~ 1
+49,noPlot,v,SLA,60.779,33.272000000000006,0,0,80,33.27,0,32.83 / 0 / 0,24.986,loglitter ~ logba + SLA; SLA ~ 1; iv.wet ~ 1
+53,noPlot,v,PC1,61.325,33.818,0,0,81,33.82,0,32.85 / 0 / 0,25.426,loglitter ~ logba + PC1; PC1 ~ 1; iv.wet ~ 1
+101,plot,ix,PC1,61.38,33.873000000000005,0,0,82,33.87,0,27.67 / 0 / 33.68,22.554,PC1 ~ iv.wet; iv.wet ~ 1; loglitter ~ logba + plotwet
+25,noPlot,iii,SLA,63.23,35.723,0,0,83,35.72,0,34.19 / 0 / 0,24.018,loglitter ~ logba + iv.wet + SLA; SLA ~ 1; iv.wet ~ 1
+85,plot,iv,SLA,63.305,35.798,0,0,84,35.8,0,34.13 / 0 / 0,24.077,loglitter ~ logba + iv.wet + plotwet; iv.wet ~ 1; SLA ~ 1
+103,plot,v,SLA,63.763,36.256,0,0,85,36.26,0,33.17 / 0 / 0,24.439,loglitter ~ logba + SLA + plotwet; SLA ~ 1; iv.wet ~ 1
+29,noPlot,iii,PC1,63.812,36.30499999999999,0,0,86,36.3,0,34.19 / 0 / 0,24.478,loglitter ~ logba + iv.wet + PC1; PC1 ~ 1; iv.wet ~ 1
+89,plot,iv,PC1,63.982,36.474999999999994,0,0,87,36.47,0,34.13 / 0 / 0,24.613,loglitter ~ logba + iv.wet + plotwet; iv.wet ~ 1; PC1 ~ 1
+107,plot,v,PC1,64.353,36.84599999999999,0,0,88,36.85,0,33.16 / 0 / 0,24.906,loglitter ~ logba + PC1 + plotwet; PC1 ~ 1; iv.wet ~ 1
+79,plot,iii,SLA,67.023,39.51599999999999,0,0,89,39.52,0,33.55 / 0 / 0,24.018,loglitter ~ logba + iv.wet + SLA + plotwet; SLA ~ 1; iv.wet ~ 1
+71,plot,vi,PC1,67.32,39.81299999999999,0,0,90,39.81,0,27.67 / 34.13,30.258,iv.wet ~ PC1; loglitter ~ logba + iv.wet + plotwet
+83,plot,iii,PC1,67.616,40.108999999999995,0,0,91,40.11,0,33.56 / 0 / 0,24.478,loglitter ~ logba + iv.wet + PC1 + plotwet; PC1 ~ 1; iv.wet ~ 1
+67,plot,vi,SLA,69.063,41.556,0,0,92,41.56,0,27.18 / 34.13,31.663,iv.wet ~ SLA; loglitter ~ logba + iv.wet + plotwet
+59,plot,i,PC1,70.948,43.44099999999999,0,0,93,43.44,0,33.56 / 27.67,30.123,loglitter ~ logba + iv.wet + PC1 + plotwet; iv.wet ~ PC1
+55,plot,i,SLA,72.821,45.31399999999999,0,0,94,45.31,0,33.55 / 27.18,31.605,loglitter ~ logba + iv.wet + SLA + plotwet; iv.wet ~ SLA
+68,plot,vi,LT,77.002,49.49499999999999,0,0,95,49.49,0,11.05 / 34.13,38.061,iv.wet ~ LT; loglitter ~ logba + iv.wet + plotwet
+70,plot,vi,CNratio,79.979,52.471999999999994,0,0,96,52.47,0,16.99 / 34.13,40.461,iv.wet ~ CNratio; loglitter ~ logba + iv.wet + plotwet
+56,plot,i,LT,80.013,52.506,0,0,97,52.51,0,34.86 / 11.05,37.294,loglitter ~ logba + iv.wet + LT + plotwet; iv.wet ~ LT
+95,plot,viii,PC1,80.118,52.61099999999999,0,0,98,52.61,0,27.67 / 0 / 33.68,37.377,iv.wet ~ PC1; PC1 ~ 1; loglitter ~ logba + plotwet
+91,plot,viii,SLA,81.256,53.748999999999995,0,0,99,53.75,0,27.18 / 0 / 33.68,38.277,iv.wet ~ SLA; SLA ~ 1; loglitter ~ logba + plotwet
+58,plot,i,CNratio,82.894,55.387,0,0,100,55.39,0,33.8 / 16.99,39.573,loglitter ~ logba + iv.wet + CNratio + plotwet; iv.wet ~ CNratio
+69,plot,vi,LDMC,88.801,61.294,0,0,101,61.29,0,1.34 / 34.13,47.571,iv.wet ~ LDMC; loglitter ~ logba + iv.wet + plotwet
+92,plot,viii,LT,90.351,62.843999999999994,0,0,102,62.84,0,11.05 / 0 / 33.68,45.472,iv.wet ~ LT; LT ~ 1; loglitter ~ logba + plotwet
+72,plot,vi,PC2,90.738,63.230999999999995,0,0,103,63.23,0,0.55 / 34.13,49.132,iv.wet ~ PC2; loglitter ~ logba + iv.wet + plotwet
+57,plot,i,LDMC,92.564,65.05699999999999,0,0,104,65.06,0,33.94 / 1.34,47.222,loglitter ~ logba + iv.wet + LDMC + plotwet; iv.wet ~ LDMC
+94,plot,viii,CNratio,92.883,65.37599999999999,0,0,105,65.38,0,16.99 / 0 / 33.68,47.475,iv.wet ~ CNratio; CNratio ~ 1; loglitter ~ logba + plotwet
+60,plot,i,PC2,94.653,67.146,0,0,106,67.15,0,34.04 / 0.55,48.875,loglitter ~ logba + iv.wet + PC2 + plotwet; iv.wet ~ PC2
+93,plot,viii,LDMC,102.553,75.04599999999999,0,0,107,75.05,0,1.34 / 0 / 33.68,55.124,iv.wet ~ LDMC; LDMC ~ 1; loglitter ~ logba + plotwet
+96,plot,viii,PC2,104.328,76.821,0,0,108,76.82,0,0.55 / 0 / 33.68,56.528,iv.wet ~ PC2; PC2 ~ 1; loglitter ~ logba + plotwet
