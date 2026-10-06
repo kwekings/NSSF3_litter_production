@@ -4,7 +4,8 @@
 # downloaded by audit/07_download_nea.R, and compare with the committed file.
 #
 # Patches (paths and encoding only):
-# - the two D:\ folders become data/nea/;
+# - the two D:\ folders become the station folders in the sister repo
+#   TFERP/LTFEM_aux/data/nea/;
 # - NEA files are read as CP1252, where the missing-value byte 0x97 is an
 #   em dash. The historical script holds the same raw 0x97 byte in its
 #   missing-value literal, so it is read as CP1252 too, and the historical
@@ -22,7 +23,20 @@ tll <- ref[c("Plot", "date1", "date2", "Dry.Mass", "Condition", "ba",
 script <- iconv(readLines("scripts/historical/GAMM only.R"),
                 "CP1252", "UTF-8")
 run <- script[32:121]
-run <- sub('^location <- "D:.*$', 'location <- "data/nea/"', run)
+# NEA files live in the sister repo TFERP/LTFEM_aux, one folder per station
+# (audit/07_download_nea.R). `location` is blanked and the folder goes
+# into each file prefix, because the rain loop reads two stations.
+dir_nea <- "../../TFERP/LTFEM_aux/data/nea/"
+run <- sub('^location <- "D:.*$', 'location <- ""', run)
+run <- sub('"DAILYDATA_S122_"',
+           'paste0(dir_nea, "S122_khatib/DAILYDATA_S122_")', run,
+           fixed = TRUE)
+run <- sub('"DAILYDATA_S69_"',
+           'paste0(dir_nea, "S69_upper_peirce_reservoir/DAILYDATA_S69_")',
+           run, fixed = TRUE)
+run <- sub('"DAILYDATA_S40_"',
+           'paste0(dir_nea, "S40_mandai/DAILYDATA_S40_")', run,
+           fixed = TRUE)
 run <- gsub('.csv"))', '.csv"), fileEncoding = "CP1252")', run,
             fixed = TRUE)
 eval(parse(text = run, encoding = "UTF-8"), envir = globalenv())
