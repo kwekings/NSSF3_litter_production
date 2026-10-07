@@ -1,0 +1,358 @@
+---
+title: "Seasonal patterns of lamina fall by species, Nee Soon swamp forest"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(mgcv)
+```
+
+::: {.preamble}
+**About this document.** This notebook repeats, on the litter data of Lam et al. (2022), the species-level seasonal analysis developed for the LTFEM litter traps (`TFERP/LTFEM_Litter`, `docs/LTFEM_litter_prelim.Rmd`, section 3). It sorts species by the shape of their seasonal curve of lamina fall: (I) one peak a year, (II) two peaks a year, (III) others. It is new analysis, not part of the published paper or of its reproduction (`historical_reproduction.Rmd`); it uses the original data files unchanged.
+:::
+
+```{css}
+.preamble { background: #F4F6F8; padding: 10px 14px; border-radius: 4px; }
+```
+
+# Data
+
+```{r read-litter}
+# Litter and tree names are both cleaned with the LTFEM_Veg name lookup
+# (floraSG plus the owner's decisions); names not in it are kept. All
+# Madhuca are one taxon (decision D4, 2026-10-04), "Madhuca sp." in the
+# current tree census.
+nameLookup <- read_csv(
+  "../../TFERP/LTFEM_Veg/docs/LTFEM_Veg_floristics/LTFEM_Veg_nameLookup.csv",
+  col_types = cols(.default = "c")
+)
+
+cleanName <- function(x) {
+  x <- str_squish(x)
+  x <- coalesce(nameLookup$species[match(x, nameLookup$query)], x)
+  if_else(str_detect(x, "^Madhuca "), "Madhuca sp.", x)
+}
+
+lamina <- read.csv("data/Cleaned lamina+PJ.csv") |>
+  mutate(date1 = as.Date(General.date, format = "%d/%m/%Y"),
+         species = cleanName(species))
+
+# A collection is a plot and collection number. Its date is the earliest
+# date among its rows: two rows of collection 1 (rows 3047 and 3048 of the
+# CSV, Q6 and Q107) have a General.date one month later than their Date
+# column, a typo that would otherwise make a spurious extra collection.
+collections <- lamina |>
+  summarise(date_coll = min(date1), .by = c(Plot, collection_no.)) |>
+  arrange(Plot, date_coll) |>
+  mutate(days_since = as.numeric(date_coll - lag(date_coll)),
+         .by = Plot) |>
+  # Assumption: the first collection of each plot covers the plot's median
+  # interval, as the date the traps were set up is not in the data
+  mutate(duration = coalesce(days_since, median(days_since, na.rm = TRUE)),
+         .by = Plot)
+
+# Mass per m^2 per collection and species: four 1 m^2 traps per plot, as in
+# the published analysis (litter / 4). Species absent from a collection had
+# no row, so are filled in as zeros.
+litter_coll <- lamina |>
+  filter(species != "") |>
+  summarise(mass = sum(Dry.Mass), .by = c(Plot, collection_no., species)) |>
+  complete(nesting(Plot, collection_no.), species,
+           fill = list(mass = 0)) |>
+  left_join(collections, by = c("Plot", "collection_no.")) |>
+  mutate(mass_perArea = mass / 4)
+
+# Annual production per species and plot (g m^-2 yr^-1): summed mass per
+# m^2 over the summed durations, scaled to a year
+annual_sppPlot <- litter_coll |>
+  summarise(prod = sum(mass_perArea) / sum(duration) * 365,
+            .by = c(species, Plot))
+```
+
+```{r read-trees}
+# Trees from the 2018 census of the NSSF plots in TFERP/LTFEM_Veg, the same
+# plot design and source as for the LTFEM litter analysis. Its 20 x 20 m
+# core stems are those of data/ten plot trees.csv (same tree IDs and DBH),
+# but with identifications updated since. compileSnapshot_trees() takes
+# species names from the most recent census and drops dead stems.
+load("../../TFERP/LTFEM_Veg/data/classified/LTFEM_Veg.RData")
+source("../../TFERP/LTFEM_Veg/scripts/compileSnapshot.R")
+
+plots_litter <- unique(collections$Plot)
+
+# Core plot (20 x 20 m), all stems
+trees_core <- compileSnapshot_trees(LTFEM_Veg, stage = "trees",
+                                    year_NSSF = "2018") |>
+  filter(plotID %in% plots_litter)
+
+# Extended plot (40 x 40 m): stems >= 30 cm DBH, i.e., the big-tree table
+# (outside the core) plus the >= 30 cm stems of the core
+trees_ext <- compileSnapshot_trees(LTFEM_Veg, stage = "bigTrees",
+                                   year_NSSF = "2018") |>
+  filter(plotID %in% plots_litter, DBH >= 30)
+
+# Basal area as in the LTFEM analysis: small trees (5-30 cm DBH, per
+# 400 m^2 of core) plus large trees (>= 30 cm DBH, per 1600 m^2), in cm^2
+# per m^2 of ground (numerically the same as m^2 per ha)
+ba_trees <- bind_rows(
+  trees_core |>
+    filter(DBH >= 5, DBH < 30) |>
+    mutate(ba = pi * (DBH / 2)^2 / 400),
+  trees_ext |>
+    mutate(ba = pi * (DBH / 2)^2 / 1600)
+) |>
+  filter(!is.na(species)) |>
+  mutate(species = cleanName(species))
+
+ba_sppPlot <- ba_trees |>
+  summarise(ba = sum(ba), .by = c(species, plotID)) |>
+  rename(Plot = plotID)
+```
+
+The data are `r n_distinct(collections$Plot)` plots, each with four 1 m^2^ litter traps, collected about every fortnight from `r format(min(collections$date_coll), "%d %b %Y")` to `r format(max(collections$date_coll), "%d %b %Y")`: `r nrow(collections)` plot collections, i.e., only **one annual cycle**. Litter was sorted to `r n_distinct(lamina$species[lamina$species != ""])` species, morphospecies and fractions. Litter is matched to trees by name, after cleaning both with the LTFEM_Veg name lookup. So the analysis covers named tree species only: lianas, morphospecies ("U…") and miscellaneous fractions have no basal area. All *Madhuca* litter and trees are treated as one taxon, "Madhuca sp." (decision D4 in the working notes).
+
+Trees are from the 2018 census of these plots in `TFERP/LTFEM_Veg`, with the same design as for the LTFEM litter analysis. Basal area is the total of (a) stems 5–30 cm DBH in the 20 × 20 m core plot in which the traps sit, and (b) stems ≥ 30 cm DBH in the 40 × 40 m plot centred on it, each per unit area of its own sample. The core stems are the same as in `data/ten plot trees.csv`, used in the published analysis. But species names follow the most recent census, so a few identifications differ from the published ones; e.g., two trees listed as *Lophopetalum multinervium* in the published data are now *Gluta wallichii*. The litter keeps the names it was sorted under.
+
+Differences from the LTFEM analysis:
+
+- **One year of data**, against about 2.5 years for LTFEM. The seasonal curve is therefore not replicated across years: it cannot be told apart from a once-off event in the year sampled. There is no separate trend smooth, and the cyclic smooth forces late July 2019 to join up with late July 2018.
+- The first collection of each plot is assumed to cover the plot's median interval between collections (`r median(collections$days_since, na.rm = TRUE)` days overall), as the date the traps were set up is not in the data.
+
+# Seasonal GAMs by species
+
+The methods are those of the LTFEM analysis. Only species with both trees and litter in at least three plots are modelled. For each species, mass per m^2^ per collection is modelled with a Tweedie GAM (which allows the many zero collections), fitted to the plots where the species has both trees and litter. The model has a cyclic smooth of day of the year, a random intercept for plot, and log(duration) as an offset.
+
+The GAM gives the seasonal **shape**. The **level** is the species' annual lamina production per unit basal area, pooled over all the plots where it has trees, including those where no litter was caught: Σ annual production / Σ basal area. Units are g m^-2^ yr^-1^ per cm^2^ m^-2^ of basal area, i.e., g yr^-1^ per cm^2^ of basal area. So the annual mean of each curve is that production per unit basal area. The bands show the uncertainty in the seasonal shape only.
+
+```{r gam-season}
+# Production per unit basal area, pooled over the plots with the species'
+# trees (g yr^-1 per cm^2 of basal area)
+level_season <- ba_sppPlot |>
+  left_join(annual_sppPlot, by = c("species", "Plot")) |>
+  summarise(plots_trees = n(),
+            plots_both = sum(prod > 0, na.rm = TRUE),
+            prod_perBA = sum(prod, na.rm = TRUE) / sum(ba),
+            .by = species)
+
+# Collections in the plots where the species has both trees and litter;
+# species with at least three such plots
+litter_season <- litter_coll |>
+  semi_join(ba_sppPlot, by = c("species", "Plot")) |>
+  filter(sum(mass) > 0, .by = c(species, Plot)) |>
+  filter(n_distinct(Plot) >= 3, .by = species)
+
+fits_season <- litter_season |>
+  mutate(doy = yday(date_coll),
+         Plot = factor(Plot)) |>
+  nest(.by = species) |>
+  mutate(
+    m = map(data, \(d) gam(
+      mass_perArea ~ s(doy, bs = "cc", k = 10) +
+        s(Plot, bs = "re") +
+        offset(log(duration)),
+      knots = list(doy = c(0.5, 366.5)),
+      family = tw(),
+      method = "REML",
+      data = d
+    )),
+    p_season = map_dbl(m, \(m) summary(m)$s.table["s(doy)", "p-value"]),
+    edf_season = map_dbl(m, \(m) summary(m)$s.table["s(doy)", "edf"])
+  )
+
+pred_season <- fits_season |>
+  mutate(pred = map2(m, data, \(m, d) {
+    nd <- tibble(doy = 1:366, Plot = d$Plot[1], duration = 14)
+    # Seasonal smooth alone (log scale)
+    p <- predict(m, newdata = nd, type = "terms",
+                 terms = "s(doy)", se.fit = TRUE)
+    mutate(nd, fit = p$fit[, 1], se = p$se.fit[, 1])
+  })) |>
+  select(species, p_season, pred) |>
+  unnest(pred) |>
+  left_join(level_season, by = "species") |>
+  mutate(peak_doy = doy[which.max(fit)],
+         # Natural units: the seasonal shape rescaled to an annual mean of
+         # the pooled production per unit basal area
+         scale = prod_perBA / mean(exp(fit)),
+         fit_ba = scale * exp(fit),
+         lwr_ba = scale * exp(fit - 1.96 * se),
+         upr_ba = scale * exp(fit + 1.96 * se),
+         .by = species)
+```
+
+## Grouping by number of peaks
+
+Species are sorted into three groups by the shape of their fitted seasonal curve: (I) one peak a year; (II) two peaks a year, however unequal; (III) others, i.e., no significant seasonal smooth (p ≥ 0.05), or three or more peaks. Peaks are counted as follows. Starting from all the local maxima and minima of the cyclic curve, the adjacent peak–trough pair that differs least, relative to their standard errors, is merged away. This is repeated until every remaining adjacent pair differs by more than 1.96 SE. It is an approximate rule (it ignores the covariance between the two points of a pair), so check borderline species against the curves.
+
+```{r group-season}
+# Peaks of a cyclic curve that stand out from the troughs beside them,
+# highest first (see the text for the rule). Same as in LTFEM_Litter.
+findPeaks <- function(fit, se) {
+  n <- length(fit)
+  before <- c(n, 1:(n - 1))
+  after <- c(2:n, 1)
+  isMax <- fit > fit[before] & fit >= fit[after]
+  isMin <- fit < fit[before] & fit <= fit[after]
+  # Maxima and minima alternate around the cycle
+  extrema <- sort(c(which(isMax), which(isMin)))
+  if (length(extrema) < 2) return(integer(0))
+  repeat {
+    k <- length(extrema)
+    nb <- c(2:k, 1)
+    z <- abs(fit[extrema] - fit[extrema[nb]]) /
+      sqrt(se[extrema]^2 + se[extrema[nb]]^2)
+    if (min(z) >= 1.96) break
+    if (k == 2) return(integer(0))
+    i <- which.min(z)
+    extrema <- extrema[-c(i, nb[i])]
+  }
+  peaks <- extrema[isMax[extrema]]
+  peaks[order(fit[peaks], decreasing = TRUE)]
+}
+
+labels_group <- c(I = "I. One peak a year",
+                  II = "II. Two peaks a year",
+                  III = "III. Other")
+
+groups_season <- pred_season |>
+  summarise(p_season = first(p_season),
+            peaks = list(doy[findPeaks(fit, se)]),
+            .by = species) |>
+  mutate(nPeaks = lengths(peaks),
+         group = case_when(p_season >= 0.05 ~ "III",
+                           nPeaks == 1 ~ "I",
+                           nPeaks == 2 ~ "II",
+                           TRUE ~ "III")) |>
+  left_join(select(fits_season, species, edf_season), by = "species") |>
+  left_join(level_season, by = "species") |>
+  # Display order: group I by the date of its peak, group II by the date of
+  # its first peak in the calendar year, group III alphabetically
+  mutate(firstPeak = map_dbl(peaks, \(p) if (length(p)) min(p) else NA),
+         sortKey = if_else(group == "III", NA_real_, firstPeak)) |>
+  arrange(group, sortKey, species)
+```
+
+Of the `r nrow(groups_season)` species, `r sum(groups_season$group == "I")` have one peak a year, `r sum(groups_season$group == "II")` have two, and group III (other) has `r sum(groups_season$group == "III")`. Dashed lines mark the peaks counted.
+
+## Seasonal curves by group {.tabset}
+
+```{r fig-season, results = "asis"}
+for (g in names(labels_group)) {
+
+  cat("\n\n###", labels_group[[g]], "\n\n")
+
+  groups_g <- filter(groups_season, group == g)
+
+  if (nrow(groups_g) == 0) {
+    cat("No species in this group.\n\n")
+    next
+  }
+
+  pred_g <- pred_season |>
+    semi_join(groups_g, by = "species") |>
+    mutate(species = factor(species, levels = groups_g$species),
+           date = as.Date(doy - 1, origin = "2024-01-01"))
+
+  peaks_g <- groups_g |>
+    select(species, peaks) |>
+    unnest(peaks) |>
+    mutate(species = factor(species, levels = levels(pred_g$species)),
+           date = as.Date(peaks - 1, origin = "2024-01-01"))
+
+  gg_season <- ggplot(pred_g, aes(x = date)) +
+    geom_vline(data = peaks_g, aes(xintercept = date),
+               linetype = "dashed", colour = "grey40") +
+    geom_ribbon(aes(ymin = lwr_ba, ymax = upr_ba), fill = "lightblue") +
+    geom_line(aes(y = fit_ba)) +
+    facet_wrap(~ species, ncol = 4, scales = "free_y") +
+    scale_x_date(date_breaks = "2 months", date_labels = "%b") +
+    labs(x = NULL,
+         y = expression(paste("Lamina fall (g ", yr^-1,
+                              " per ", cm^2, " basal area)"))) +
+    theme_bw(base_size = 9) +
+    theme(strip.text = element_text(face = "italic"))
+
+  # Figure height to suit the number of panels (rows of 4)
+  height <- 1 + 2 * ceiling(nrow(groups_g) / 4)
+
+  cat(knitr::knit_child(
+    text = c(sprintf("```{r, fig.height=%.1f}", height),
+             "print(gg_season)",
+             "```"),
+    envir = environment(),
+    quiet = TRUE
+  ))
+}
+```
+
+## Peaks by species
+
+```{r table-season}
+groups_season |>
+  mutate(peak_dates = map_chr(peaks, \(p) {
+    if (length(p) == 0) return("–")
+    format(as.Date(p - 1, origin = "2024-01-01"), "%d %b") |>
+      paste(collapse = "; ")
+  })) |>
+  transmute(group, species, plots_trees, plots_both, peak_dates,
+            prod_perBA = round(prod_perBA, 1),
+            edf = round(edf_season, 1),
+            p = format.pval(p_season, digits = 2, eps = 0.001)) |>
+  knitr::kable(col.names = c("Group", "Species", "Plots with trees",
+                             "Plots with trees and litter",
+                             "Peaks (highest first)",
+                             "g yr^-1^ per cm^2^ BA",
+                             "edf of seasonal smooth",
+                             "p (seasonal smooth)")) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+# Comparison with the LTFEM plots
+
+```{r compare-ltfem}
+# Written by LTFEM_Litter/docs/LTFEM_litter_prelim.Rmd on knitting
+file_ltfem <- "../../TFERP/LTFEM_Litter/out/seasonal_groups.csv"
+has_ltfem <- file.exists(file_ltfem)
+```
+
+`r if (!has_ltfem) "The LTFEM results (\x60TFERP/LTFEM_Litter/out/seasonal_groups.csv\x60) were not found, so this comparison is skipped."`
+
+```{r table-compare, eval = has_ltfem}
+groups_ltfem <- read_csv(file_ltfem, show_col_types = FALSE) |>
+  mutate(peak_dates_ltfem = map_chr(peaks_doy, \(p) {
+    if (is.na(p)) return("–")
+    as.integer(str_split_1(p, ";")) |>
+      (\(d) format(as.Date(d - 1, origin = "2024-01-01"), "%d %b"))() |>
+      paste(collapse = "; ")
+  }))
+
+groups_season |>
+  mutate(peak_dates = map_chr(peaks, \(p) {
+    if (length(p) == 0) return("–")
+    format(as.Date(p - 1, origin = "2024-01-01"), "%d %b") |>
+      paste(collapse = "; ")
+  })) |>
+  inner_join(groups_ltfem, by = c("species" = "litterType"),
+             suffix = c("", "_ltfem")) |>
+  transmute(species, group, peak_dates, group_ltfem, peak_dates_ltfem,
+            prod = round(prod_perBA, 1),
+            prod_ltfem = round(prod_perBA_ltfem, 1)) |>
+  knitr::kable(col.names = c("Species", "NSSF group", "NSSF peaks",
+                             "LTFEM group", "LTFEM peaks",
+                             "NSSF g yr^-1^ cm^-2^ BA",
+                             "LTFEM g yr^-1^ cm^-2^ BA")) |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+The species modelled in both data sets are listed above. Basal area is measured the same way in both, but the two data sets differ in years (2018–19 against 2023–25), in habitat (swamp and non-swamp plots in Nee Soon against the WYK plots), and in length of record.
+
+# References
+
+Lam, W.N., Chan, P.J., Ting, Y.Y., Sim, H.J., Lian, J.J., Chong, R., Rahman, N.E., Tan, L.W.A., Ho, Q.Y., Chiam, Z., Arora, S., Lai, H.R., Ramchunder, S.J., Peh, K.S.-H., Cai, Y. & Chong, K.Y. (2022) Habitat adaptation mediates the influence of leaf traits on canopy productivity: evidence from a tropical freshwater swamp forest. *Ecosystems* 25: 1006–1019. https://doi.org/10.1007/s10021-021-00697-7
