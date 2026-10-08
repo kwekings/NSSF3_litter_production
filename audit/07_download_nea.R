@@ -7,7 +7,7 @@
 # in b4b9af8). Files already on disk are skipped.
 # Run from the repository root:  Rscript audit/07_download_nea.R
 
-dir_nea <- "../../TFERP/LTFEM_aux/data/nea"
+dir_nea <- "../../TFERP/LTFEM_aux/data/nea/weather.gov.sg/"
 stopifnot(dir.exists(dir_nea))
 stations <- c(S122 = "S122_khatib", S69 = "S69_upper_peirce_reservoir",
               S40 = "S40_mandai")

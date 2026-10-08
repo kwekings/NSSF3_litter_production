@@ -5,7 +5,7 @@
 #
 # Patches (paths and encoding only):
 # - the two D:\ folders become the station folders in the sister repo
-#   TFERP/LTFEM_aux/data/nea/;
+#   TFERP/LTFEM_aux/data/nea/weather.gov.sg/;
 # - NEA files are read as CP1252, where the missing-value byte 0x97 is an
 #   em dash. The historical script holds the same raw 0x97 byte in its
 #   missing-value literal, so it is read as CP1252 too, and the historical
@@ -26,7 +26,7 @@ run <- script[32:121]
 # NEA files live in the sister repo TFERP/LTFEM_aux, one folder per station
 # (audit/07_download_nea.R). `location` is blanked and the folder goes
 # into each file prefix, because the rain loop reads two stations.
-dir_nea <- "../../TFERP/LTFEM_aux/data/nea/"
+dir_nea <- "../../TFERP/LTFEM_aux/data/nea/weather.gov.sg/"
 run <- sub('^location <- "D:.*$', 'location <- ""', run)
 run <- sub('"DAILYDATA_S122_"',
            'paste0(dir_nea, "S122_khatib/DAILYDATA_S122_")', run,

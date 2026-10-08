@@ -30,7 +30,7 @@ run <- script[32:121]
 # NEA files live in the sister repo TFERP/LTFEM_aux, one folder per station
 # (audit/07_download_nea.R). `location` is blanked and the folder goes
 # into each file prefix, because the rain loop reads two stations.
-dir_nea <- "../../TFERP/LTFEM_aux/data/nea/"
+dir_nea <- "../../TFERP/LTFEM_aux/data/nea/weather.gov.sg/"
 run <- sub('^location <- "D:.*$', 'location <- ""', run)
 run <- sub('"DAILYDATA_S122_"',
            'paste0(dir_nea, "S122_khatib/DAILYDATA_S122_")', run,

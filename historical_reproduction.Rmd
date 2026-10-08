@@ -174,7 +174,7 @@ valueKey(tribble(
 # offset vector of months stops the reading at June 2019, although
 # collections run to 30 July 2019. Rain at Upper Peirce (S69) is replaced
 # by Mandai (S40) for March-June 2019, when S69 lacks most of its data.
-dirNea <- "../../TFERP/LTFEM_aux/data/nea"
+dirNea <- "../../TFERP/LTFEM_aux/data/nea/weather.gov.sg/"
 monthsRead <- format(seq(as.Date("2018-06-01"), as.Date("2019-06-01"),
                          by = "month"), "%Y%m")
 readNea <- function(folder, station, months) {
@@ -1048,7 +1048,7 @@ tibble(
            "../ecophysio_traits/raw_data/SSI Jan21.csv",
            "data/CHNS v3_senesced.csv + data/CHNS v3_fresh.csv",
            "data/HJ leaf data full.csv", "data/PJ leaf dat.csv",
-           "../../TFERP/LTFEM_aux/data/nea/",
+           "../../TFERP/LTFEM_aux/data/nea/weather.gov.sg/",
            "data/litter.production w species-plot CAA Feb21.csv",
            "data/data for GAMM.csv"),
   Role = c("Leaf litter per collection, plot and species",
